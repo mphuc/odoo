@@ -323,7 +323,7 @@
         </section>
         <section>
             <div class="container text-center mb48">
-                You can compare editions on our <a href="page/editions.html">Editions page</a>
+              
             </div>
         </section>
         <section class="s_sponsors text-center">
