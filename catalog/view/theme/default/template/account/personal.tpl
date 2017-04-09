@@ -1,17 +1,15 @@
 <?php echo $header; ?>
 <?php echo $column_left; ?>
 
-<div class="main-content">
-    <div class="page-header">
-      <div class="header-left-panel">
-          <!--  Title Page -->
-          <h1 class="page-title">Downline Tree</h1>
-          <!--  Breadcrumb Section -->
-      </div>
-    </div>
-    <div class="page-content container-fluid">
-        <div class="main-dashboard">
-            <div class="row">
+<div class="content-page">
+    <div class="content">
+        <div class="page-title-group">
+            <h4 class="page-title">Genealogy</h4>
+            <h5 class="text-muted page-title-alt"></h5>
+        </div>
+        <div class="cb-page-content">
+            <div class="container">
+                <div class="row">
     <div class="col-md-12">
    
       <div class="panel panel-default tab-content">
@@ -45,7 +43,7 @@
                 </fieldset>
               
               </div>
-              <div class="detail-icon" style="margin-top: 50px;">
+              <div class="detail-icon" style="margin-top: 180px;">
                           <img src="catalog/view/theme/default/css/icons/packe0.png" width="30px">- New User
                           <img src="catalog/view/theme/default/css/icons/packe1.png" width="30px">- 0.5 BTC
                           <img src="catalog/view/theme/default/css/icons/packe2.png" width="30px">- 1 BTC
@@ -99,7 +97,7 @@ jQuery.fn.show_tree = function(node) {
     x_p += "<p>PD Binary Right: "+node.rightPD+" BTC</p>";
     html += !node.empty 
         ? '<div class=\''+node_class+' '+level_active+'\'><a data-html="true" data-toggle="tooltip" rel="tooltip" data-placement="top" data-title="<p>'+x_p+'</p>" class="binaryTree" style="display:block"   \'><i class="fa fa-user type-'+node.level+' package-'+node.maxPD+'" onclick=\'click_node('+node.id+')\' value=\''+node.id+'\' aria-hidden="true"></i></a><span class="username_node">'+node.username+'</span>' 
-        : '<div class=\''+node_class+'\'><a data-toggle="tooltip" data-placement="top" style="display:block" onclick=\'click_node_add('+node.p_binary+', "'+positon[1]+'")\' value=\''+node.p_binary+'\' title="Add new user"><i class="fa fa-plus-square type-add"></i></a>';
+        : '';
 
     html += '<div id=\''+node.id+'\' ></div>';
 
@@ -246,7 +244,16 @@ jQuery(document).ready(function($) {
 </script>
 <style>
   .username_node{
-     margin-top: -39px; float: left; position: absolute; left: -8px; font-size: 8px; width: 51px; overflow: hidden;
+     margin-top: -19px;
+    /* float: left; */
+    position: absolute;
+    /* left: -8px; */
+    font-size: 11px;
+    width: 100px;
+    overflow: hidden;
+    left: 0;
+    color: #1c2b36;
+    text-transform: uppercase;
   }
   
 </style>

@@ -850,7 +850,7 @@ $( document ).ready(function() {
 
             reader.onload = function (e) {
                 $('#blah').attr('src', e.target.result).show().css({'width': '100%','height':'200px'});
-                $('.button_update_img_profile').show();
+                $('.button_update_img_profile').show();dd
                  $('#old_img').hide();
             }
 

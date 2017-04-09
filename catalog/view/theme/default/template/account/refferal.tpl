@@ -3,17 +3,15 @@
    echo $self -> load -> controller('common/header'); 
    echo $self -> load -> controller('common/column_left'); 
    ?>
-   <div class="main-content">
-   <div class="page-header">
-      <div class="header-left-panel">
-          <!--  Title Page -->
-          <h1 class="page-title">Refferals</h1>
-          <!--  Breadcrumb Section -->
-      </div>
-    </div>     
-    <div class="page-content container-fluid">
-        <div class="main-dashboard">
-          <div class="row">
+<div class="content-page">
+    <div class="content">
+        <div class="page-title-group">
+            <h4 class="page-title">Refferals</h4>
+            <h5 class="text-muted page-title-alt"></h5>
+        </div>
+        <div class="cb-page-content">
+            <div class="container">
+                <div class="row">
       <div class="col-sm-12">
         <div class="panel panel-info">
           <div class="panel-heading" style="background: #31708f; padding: 7px;">
