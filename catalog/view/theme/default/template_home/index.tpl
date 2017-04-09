@@ -23,7 +23,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Open Source ERP and CRM | Odoo</title>
+    <title>Odoo | Affiliate Network Programs</title>
     <link type="image/x-icon" rel="shortcut icon" href="http://odoocdn.com/web/image/website/1/favicon/" />
 
     <script type="text/javascript">
