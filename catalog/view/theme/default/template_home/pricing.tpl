@@ -92,7 +92,7 @@
                     </a>
 
                     <div>
-                        <a href="login.php">Sign in</a>
+                        <a href="login.html">Sign in</a>
                     </div>
                     <a class="btn btn-primary" href="signup.php">Sign up</a>
                 </div>

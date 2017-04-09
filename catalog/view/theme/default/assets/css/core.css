@@ -308,10 +308,10 @@ a:focus {
     font-size: 13px;
 }
 .font-40 {
-    font-size: 40px;
+    font-size: 25px;
 }
 .font-12 {
-    font-size: 12px;
+    font-size: 16px;
 }
 .wrapper-md {
     padding: 20px;
@@ -1120,7 +1120,12 @@ pre {
     position: relative;
     width: 205px;
     z-index: 1;
-    background: #1c2b36;
+    background: #75526b;
+    background: -webkit-linear-gradient(150deg, #875A7B 20%, #62495B 80%);
+    background: -moz-linear-gradient(150deg, #875A7B 20%, #62495B 80%);
+    background: -ms-linear-gradient(150deg, #875A7B 20%, #62495B 80%);
+    background: -o-linear-gradient(150deg, #875A7B 20%, #62495B 80%);
+    background: linear-gradient(150deg, #875A7B 20%, #62495B 80%);
 }
 .topbar .topbar-left-sm {
     width: 180px;
@@ -1143,10 +1148,17 @@ pre {
     display: none;
 }
 .navbar-default {
-    background-color: #fff;
+       background-color: #FCFCFC;
+    color: #9f4d89;
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.17);
     border-radius: 0px;
     border: none;
     margin-bottom: 0px;
+    /*background: -webkit-linear-gradient(150deg, #ffeaf9 20%, #d4b4c9 80%);
+    background: -moz-linear-gradient(150deg, #ffeaf9 20%, #d4b4c9 80%);
+    background: -ms-linear-gradient(150deg, #ffeaf9 20%, #d4b4c9 80%);
+    background: -o-linear-gradient(150deg, #ffeaf9 20%, #d4b4c9 80%);
+    background: linear-gradient(150deg, #ffeaf9 20%, #d4b4c9 80%);*/
 }
 .navbar-default .navbar-nav > .open > a {
     background-color: rgba(255, 255, 255, 0.1);
@@ -1281,7 +1293,12 @@ pre {
     z-index: 9;
 }
 .side-menu.left {
-    background: #1c2b36;
+    background: #75526b;
+    background: -webkit-linear-gradient(150deg, #875A7B 20%, #62495B 80%);
+    background: -moz-linear-gradient(150deg, #875A7B 20%, #62495B 80%);
+    background: -ms-linear-gradient(150deg, #875A7B 20%, #62495B 80%);
+    background: -o-linear-gradient(150deg, #875A7B 20%, #62495B 80%);
+    background: linear-gradient(150deg, #875A7B 20%, #62495B 80%);
     box-shadow: 0 0px 8px 0 rgba(0, 0, 0, 0.06), 0 1px 0px 0 rgba(0, 0, 0, 0.02);
     position: absolute;
     top: 60px;
@@ -1323,6 +1340,9 @@ body.fixed-left .side-menu.right {
     margin-bottom: 60px;
     margin-top: 60px;
     padding: 0;
+    background-image: url(../images/arch_1.jpg);
+        background-size: cover;
+            background-repeat: no-repeat;
 }
 .cb-page-content {
     padding: 0 15px;

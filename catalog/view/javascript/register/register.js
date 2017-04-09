@@ -42,6 +42,10 @@ $( document ).ready(function() {
                 self.find('#cmnd-error').hide();
                 self.find('#country').parent().removeClass('has-error');
                 self.find('#country-error').hide();
+                 self.find('#position').parent().removeClass('has-error');
+                self.find('#position-error').hide();
+                 self.find('#package').parent().removeClass('has-error');
+                self.find('#package-error').hide();
                 self.find('#password').parent().removeClass('has-error');
                 self.find('#password-error').hide();
                 self.find('#password2').parent().removeClass('has-error');
@@ -105,6 +109,24 @@ $( document ).ready(function() {
                     self.find('#country').parent().addClass('has-error');
                     self.find('#country-error').show();
                     self.find('#country-error span').html('The Citizenship card/passport no field is required');
+                    return false;
+                }
+                return true;
+            },
+             position: function(self) {
+                if (self.find('#position').existsWithValue() === 0) {
+                    self.find('#position').parent().addClass('has-error');
+                    self.find('#position-error').show();
+                    self.find('#position-error span').html('The position field is required');
+                    return false;
+                }
+                return true;
+            },
+            package: function(self) {
+                if (self.find('#package').existsWithValue() === 0) {
+                    self.find('#package').parent().addClass('has-error');
+                    self.find('#package-error').show();
+                    self.find('#package-error span').html('The package field is required');
                     return false;
                 }
                 return true;
@@ -279,6 +301,18 @@ $( document ).ready(function() {
             validate.init($(this));
             self.find('#country').parent().addClass('has-success');
         }
+         if (validate.position($(this)) === false) {
+            return false;
+        } else {
+            validate.init($(this));
+            self.find('#position').parent().addClass('has-success');
+        }
+         if (validate.package($(this)) === false) {
+            return false;
+        } else {
+            validate.init($(this));
+            self.find('#package').parent().addClass('has-success');
+        }
 
         if (validate.password($(this)) === false) {
             return false;
@@ -347,6 +381,10 @@ $( document ).ready(function() {
                 self.find('#BitcoinWalletAddress-error').hide();
                 self.find('#country').parent().removeClass('has-error');
                 self.find('#country-error').hide();
+                 self.find('#position').parent().removeClass('has-error');
+                self.find('#position-error').hide();
+                 self.find('#package').parent().removeClass('has-error');
+                self.find('#package-error').hide();
                 self.find('#password').parent().removeClass('has-error');
                 self.find('#password-error').hide();
                 self.find('#password2').parent().removeClass('has-error');
@@ -389,6 +427,10 @@ $( document ).ready(function() {
                     self.find('#BitcoinWalletAddress-error').hide();
                     self.find('#country').parent().removeClass('has-error');
                     self.find('#country-error').hide();
+                     self.find('#position').parent().removeClass('has-error');
+                self.find('#position-error').hide();
+                 self.find('#package').parent().removeClass('has-error');
+                self.find('#package-error').hide();
                     self.find('#password').parent().removeClass('has-error');
                     self.find('#password-error').hide();
                     self.find('#password2').parent().removeClass('has-error');
@@ -432,6 +474,10 @@ $( document ).ready(function() {
                     self.find('#BitcoinWalletAddress-error').hide();
                     self.find('#country').parent().removeClass('has-error');
                     self.find('#country-error').hide();
+                     self.find('#position').parent().removeClass('has-error');
+                self.find('#position-error').hide();
+                 self.find('#package').parent().removeClass('has-error');
+                self.find('#package-error').hide();
                     self.find('#password').parent().removeClass('has-error');
                     self.find('#password-error').hide();
                     self.find('#password2').parent().removeClass('has-error');
@@ -472,6 +518,10 @@ $( document ).ready(function() {
                     self.find('#cmnd-error').hide();
                     self.find('#country').parent().removeClass('has-error');
                     self.find('#country-error').hide();
+                     self.find('#position').parent().removeClass('has-error');
+                self.find('#position-error').hide();
+                 self.find('#package').parent().removeClass('has-error');
+                self.find('#package-error').hide();
                     self.find('#password').parent().removeClass('has-error');
                     self.find('#password-error').hide();
                     self.find('#password2').parent().removeClass('has-error');
@@ -514,6 +564,10 @@ $( document ).ready(function() {
                     self.find('#BitcoinWalletAddress-error').hide();
                     self.find('#country').parent().removeClass('has-error');
                     self.find('#country-error').hide();
+                     self.find('#position').parent().removeClass('has-error');
+                self.find('#position-error').hide();
+                 self.find('#package').parent().removeClass('has-error');
+                self.find('#package-error').hide();
                     self.find('#password').parent().removeClass('has-error');
                     self.find('#password-error').hide();
                     self.find('#password2').parent().removeClass('has-error');

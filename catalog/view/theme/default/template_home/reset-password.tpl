@@ -96,7 +96,7 @@
                     </a>
 
                     <div>
-                        <a href="login.php">Sign in</a>
+                        <a href="login.html">Sign in</a>
                     </div>
                     <a class="btn btn-primary" href="signup.php">Sign up</a>
                 </div>
@@ -133,26 +133,38 @@
           <div class="alert alert-info">
             <p>Access and manage your instances from this Odoo account.</p>
           </div>
-        <form class="oe_login_form" role="form" method="post" onsubmit="this.action = this.action + location.hash" action="#">
+        <form class="oe_login_form" role="form" method="post" onsubmit="this.action = this.action + location.hash" action="forgot.html">
               
-                
+                  <?php if ($error_warning) { ?>
+               <div class="text-warning"><i class="fa fa-exclamation-circle"></i>
+                  <?php echo $error_warning; ?>
+               </div>
+               <?php } ?>
 
                 <div class="form-group field-login">
                     <label for="login" class="control-label">Your Username</label>
-                    <input type="text" name="login" id="login" class="form-control" required="required" autofocus="autofocus" autocapitalize="off"/>
+                    <input type="text" name="email" value="" id="input-email" class="form-control" required="required" autofocus="autofocus" autocapitalize="off"/>
                 </div>
 
                 
-       
-      
-        
+                     <?php
+              $ranStr = md5(microtime());
+              $ranStr = hexdec( crc32($ranStr));
+              $ranStr = substr($ranStr, 0, 6);
+              $_SESSION['cap_code'] = $ranStr;
+            ?>
+            <div class="form-group field-login">
+             <label for="capcha" class="control-label">Captcha</label>
+             <br>
+              <img class="img_capcha" style="float: right; height: 35px;" src="captcha_code.php"/>
+              <input style="width: 75%; margin-left: px; float: left" autocomplete="off" type="text" name="capcha" placeholder="Capcha" id="input-password" value="" class="form-control" />
+                </div>  
+<div class="clearfix"></div>
                 
-
-                <input type="hidden" name="redirect"/>
                 <div class="clearfix oe_login_buttons">
                     
            
-                <a class="btn btn-link pull-right" href="login.php">Back to login</a>
+                <a class="btn btn-link pull-right" href="login.html">Back to login</a>
             <button type="submit" class="btn btn-primary pull-left">
             
             

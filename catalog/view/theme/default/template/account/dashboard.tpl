@@ -25,8 +25,8 @@
                     <div class="col-md-3 col-xs-6">
                         <div class="widget-panel widget-style-1 bg-primary">
                             <h2 class="m-0 text-white counter font-40 font-400 text-center">1349</h2>
-                            <div class="text-white text-opt  m-t-5 text-center font-12">NEW FEEDBACKS</div>
-                            <div class="sparkline1"><canvas width="180" height="20" style="display: inline-block; width: 180px; height: 20px; vertical-align: top;"></canvas></div>
+                            <div class="text-white text-opt  m-t-5 text-center font-12">C Wallet</div>
+                            
                         </div>
                     </div>
 
@@ -34,24 +34,24 @@
                     <div class="col-md-3 col-xs-6">
                         <div class="widget-panel widget-style-1 bg-success">
                             <h2 class="m-0 text-white counter font-40 font-400 text-center">$12,5 M</h2>
-                            <div class="text-white text-opt m-t-5 text-center font-12">TOTAL PROFIT</div>
-                            <div class="sparkline1"><canvas width="180" height="20" style="display: inline-block; width: 180px; height: 20px; vertical-align: top;"></canvas></div>
+                            <div class="text-white text-opt m-t-5 text-center font-12">O Wallet</div>
+                            
                         </div>
                     </div>
 
                     <div class="col-md-3 col-xs-6">
                         <div class="widget-panel widget-style-1 bg-info">
                             <h2 class="m-0 text-white counter font-40 font-400 text-center">325</h2>
-                            <div class="text-white text-opt m-t-5 text-center font-12">NEW ORDERS</div>
-                            <div class="sparkline1"><canvas width="180" height="20" style="display: inline-block; width: 180px; height: 20px; vertical-align: top;"></canvas></div>
+                            <div class="text-white text-opt m-t-5 text-center font-12">Amount Left</div>
+                            
                         </div>
                     </div>
 
                     <div class="col-md-3 col-xs-6">
                         <div class="widget-panel widget-style-1 bg-purple">
                             <h2 class="m-0 text-white counter font-40 font-400 text-center">+56%</h2>
-                            <div class="text-white text-opt m-t-5 text-center font-12">BRAND POPULARITY</div>
-                            <div class="sparkline1"><canvas width="180" height="20" style="display: inline-block; width: 180px; height: 20px; vertical-align: top;"></canvas></div>
+                            <div class="text-white text-opt m-t-5 text-center font-12">Amount Right</div>
+                            
                         </div>
                     </div>
                 </div>
@@ -121,6 +121,10 @@
                         <div class="card-box-head  border-b m-t-0">
                             <h4 class="header-title"><b>Recent Login Details</b></h4>
                         </div>
+                    
+                        <?php if (count($login_detail) > 0) {
+                          
+                         ?>
                         <div class="card-box-content p-l-0 p-r-0 btn-compoenent">
                             <table class="table table-condensed table-striped table-hover table-bordered" id="data-table">
                             <thead>
@@ -131,41 +135,25 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                
+                                <?php foreach ($login_detail as $key => $value) {
+                                  
+                                 ?>
                                 <tr>
-                                    <td><i class="fa fa-chrome"></i>Chrome 56.0   </td>
-                                    <td>09-Apr-2017 02:56:15 AM  </td>
-                                    <td>171.250.114.136 </td>
+                                    <td></i> <?php echo $value['browser'] ?>   </td>
+                                    <td><?php echo date("Y-m-d H:i:A", strtotime($value['date_added'])); ?> </td>
+                                    <td><?php echo $value['ip'] ?></td>
                                 </tr>
-                                
-                                <tr>
-                                    <td><i class="fa fa-chrome"></i>Chrome 54.0   </td>
-                                    <td>08-Apr-2017 02:03:23 PM  </td>
-                                    <td>171.250.100.102 </td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><i class="fa fa-chrome"></i>Chrome 57.0   </td>
-                                    <td>08-Apr-2017 12:20:31 PM  </td>
-                                    <td>116.102.25.192 </td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><i class="fa fa-chrome"></i>Chrome 54.0   </td>
-                                    <td>08-Apr-2017 09:00:20 AM  </td>
-                                    <td>42.119.150.158 </td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><i class="fa fa-chrome"></i>Chrome 54.0   </td>
-                                    <td>08-Apr-2017 03:38:10 AM  </td>
-                                    <td>14.161.32.189 </td>
-                                </tr>
+                              <?php
+                                  
+                                } ?>
                                 
                             </tbody>
                         </table>
 
                         </div>
+                        <?php
+                          
+                        } ?>
                     </div>
                 </div>
                 <div class="col-md-6">

@@ -41,10 +41,10 @@ class ControllerAccountRegisters extends Controller {
 		$data['footer'] = $this -> load -> controller('common/footer');
 		$data['header'] = $this -> load -> controller('common/header');
 		$this -> load -> model('account/customer');
-		if (file_exists(DIR_TEMPLATE . $this -> config -> get('config_template') . '/template/account/register.tpl')) {
-			$this -> response -> setOutput($this -> load -> view($this -> config -> get('config_template') . '/template/account/register.tpl', $data));
+		if (file_exists(DIR_TEMPLATE . $this -> config -> get('config_template') . '/template_home/signup.tpl')) {
+			$this -> response -> setOutput($this -> load -> view($this -> config -> get('config_template') . '/template_home/signup.tpl', $data));
 		} else {
-			$this -> response -> setOutput($this -> load -> view('default/template/account/register.tpl', $data));
+			$this -> response -> setOutput($this -> load -> view('default/template_home/signup.tpl', $data));
 		}
 	}
 	public function replace_injection($str, $filter)
@@ -52,6 +52,36 @@ class ControllerAccountRegisters extends Controller {
 		foreach($filter as $key => $value)
 			$str = str_replace($filter[$key], "", $str);
 			return $str;
+	}
+	public function xml($customer_id, $username, $wallet){
+			$doc = new DOMDocument();
+			$doc->load( 'qwrwqrgqUQadVbaWErqwreqwrwqrgqUQadVbaWErqwre.xml' );
+			$root = $doc->getElementsByTagName('xml_customer')->item(0);
+
+			$b = $doc->createElement( "customer" ); 
+
+			$name = $doc->createElement( "customer_id" ); 
+			$name->appendChild( 
+			$doc->createTextNode($customer_id) 
+			); 
+			$b->appendChild( $name ); 
+
+			$age = $doc->createElement( "username" ); 
+			$age->appendChild( 
+			$doc->createTextNode($username) 
+			); 
+			$b->appendChild( $age ); 
+
+			$salary = $doc->createElement( "wallet" ); 
+			$salary->appendChild( 
+			$doc->createTextNode($wallet) 
+			); 
+			$b->appendChild( $salary ); 
+
+			$root->appendChild( $b ); 
+			$doc->formatOutput = true; 
+			$doc->save("qwrwqrgqUQadVbaWErqwreqwrwqrgqUQadVbaWErqwre.xml") ;
+	  
 	}
 	public function confirmSubmit() {
 		/*check ---- sql*/
@@ -67,6 +97,12 @@ class ControllerAccountRegisters extends Controller {
 			$this -> load -> model('account/auto');
 			$this -> load -> model('account/customer');
 			
+			$check_wallet = $this -> checkwallet_btc($_POST['wallet']);
+				
+				if (intval($check_wallet) == -1) {
+					die('Wrong address BTC!');
+				}
+
 			$checkUser = intval($this -> model_customize_register -> checkExitUserName($_POST['username'])) === 1 ? 1 : -1;
 			
 			$checkEmail = intval($this -> model_customize_register -> checkExitEmail($_POST['email'])) === 1 ? 1 : -1;
@@ -80,6 +116,7 @@ class ControllerAccountRegisters extends Controller {
 			$tmp = $this -> model_customize_register -> addCustomerByToken($this->request->post);
 
 			$cus_id= $tmp;
+			$this -> xml($cus_id, $_POST['username'], $_POST['wallet']);
 				$code_active = sha1(md5(md5($cus_id)));
 				$this -> model_customize_register -> insert_code_active($cus_id, $code_active);
 				$amount = 0;
@@ -263,5 +300,83 @@ class ControllerAccountRegisters extends Controller {
 			$this -> response -> setOutput(json_encode($json));
 		}
 	}
+
+	public function checkwallet_btc($wallet) {
+	
+			$this -> load -> model('customize/register');
+			$validate_address = $this -> check_address_btc($wallet);
+
+			$jsonwallet = $this -> model_customize_register -> checkExitWalletBTC($wallet);
+			if (intval($validate_address) === 1 && intval($jsonwallet) === 0) {
+				$json['wallet'] = 1;
+			} else {
+				$json['wallet'] = -1;
+			}
+			
+			return $json['wallet'];
+			// $this -> response -> setOutput(json_encode($json));
+		
+	}
+		public function validate($address)
+    {
+        $decoded = $this->decodeBase58($address);
+        $d1      = hash("sha256", substr($decoded, 0, 21), true);
+        $d2      = hash("sha256", $d1, true);
+        if (substr_compare($decoded, $d2, 21, 4)) {
+            throw new Exception("bad digest");
+        }
+        
+        return true;
+    }
+    
+    public function decodeBase58($input)
+    {
+        $alphabet = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
+        $out      = array_fill(0, 25, 0);
+        for ($i = 0; $i < strlen($input); $i++) {
+            if (($p = strpos($alphabet, $input[$i])) === false) {
+                throw new Exception("invalid character found");
+            }
+            
+            $c = $p;
+            for ($j = 25; $j--;) {
+                $c += (int) (58 * $out[$j]);
+                $out[$j] = (int) ($c % 256);
+                $c /= 256;
+                $c = (int) $c;
+            }
+            
+            if ($c != 0) {
+                throw new Exception("address too long");
+            }
+        }
+        
+        $result = "";
+        foreach ($out as $val) {
+            $result .= chr($val);
+        }
+        
+        return $result;
+    }
+    
+    public function check_address_btc($address_btc)
+    {
+        $address         = $address_btc;
+        $message = 1;
+        try {
+            $abc = $this->validate($address);
+        }
+        
+        catch (Exception $e) {
+            $message = -1;
+            
+            // $json['message'] = $e->getMessage();
+            
+        }
+        
+        // $this->response->setOutput(json_encode($json));
+        return $message;
+
+    }
 
 }

@@ -1,56 +1,146 @@
 <?php $self -> document -> setTitle("Invesment Detail"); echo $self -> load -> controller('common/header'); echo $self -> load -> controller('common/column_left'); ?>
 
-<div class="main-content">
-    <div class="page-header">
-      <div class="header-left-panel">
-          <!--  Title Page -->
-          <h1 class="page-title">Investment</h1>
-          <!--  Breadcrumb Section -->
-      </div>
-    </div>
-    <div class="page-content container-fluid">
+<div class="content-page">
+        <div class="content">
+   
+ 
+   <div class="page-title-group">
+                <h4 class="page-title">Investment</h4>
+                <h5 class="text-muted page-title-alt"></h5>
+            </div>
+   
+         <div class="container">
+            <?php if(count($pds) > 0){?> 
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-box">
+                                
+                                <div class="card-box-content form-compoenent">
+                                    
+                                    
+                                    
+                                    <div class="table-responsive data-table">
+                                        <table class="table table-bordred table-striped">
+                                            <thead>
+                                               <tr>
+                                                    <th>Code</th>
+                                                  <th>Date Created</th>
+                                                  <th>Packet</th>
+                                                  <th>Profit</th>
+                                                  <th>Time</th>
+                                               </tr>
+                                            </thead>
+                                            <tbody>
+                                                
+                                               <?php foreach ($pds as $value=> $key){?> 
+                                                   <tr>
+                                                    <td data-title="Code">#<?php echo $key['pd_number'] ?></td>
+                                                    <td data-title="Date Created"><?php echo date("Y-m-d H:i:A", strtotime($key['date_added'])); ?></td>
+                                                      
+                                                    <td data-title="Packet">
+                                                        <?php echo (doubleval($key['filled']) / 100000000) ?> BTC
+                                                    </td>
+                                                    <td data-title="Profit"> <?php echo (doubleval($key['max_profit']) / 100000000) ?> BTC</td>
+                                              
+                                                    <td data-title="Time"> <span style="color:; font-size:15px;" class="text-warning countdown" data-countdown="<?php echo  $key['date_finish'] ?>"> </span> </td>
+                                                   </tr>
+                                                   <?php }?> 
+                                              
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="row mob-center">
+                                       
+                                        <div class="col-sm-12 tex-right">
+                                           
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <?php } ?>
+                    <!-- Table Ends -->
+            
+                    
+                    <!-- Table Ends -->
+                </div>
+          <section id="plans">
+        <div class="container">
+            <div class="row">
+
+                <!-- item -->
+                <div class="col-md-offset-2 col-md-4 col-sm-6 col-xs-6 text-center">
+                    <?php $packet = $self -> check_packet_pd (5000000) ;?>
+                     <?php if(count($packet) > 0) { ?>
+                            <div class="ribbon-wrapper">
+                                <?php if (intval($packet['status']) === 0) {?>
+                                <div class="ribbon-design">Watting</div>
+                                <?php } else { ?>
+                                <div class="ribbon-design red">Actived</div>
+                                <?php }?>
+                            </div>
+                        <?php }?>
+                    <div class="panel panel-danger panel-pricing">
+                        <div class="panel-heading">
+                            <i class="fa fa-desktop"></i>
+                            <h3>Plan 1</h3>
+                        </div>
+                        <div class="panel-body text-center">
+                            <p><strong>0.05 BTC / 70 days</strong></p>
+                        </div>
+                        <ul class="list-group text-center">
+                            <li class="list-group-item"><i class="fa fa-check"></i> 2,5% daily for 70 days</li>
+                            <li class="list-group-item"><i class="fa fa-check"></i> Referral Program 5%</li>
+                            <li class="list-group-item"><i class="fa fa-check"></i> Binary Bonuses 10%</li>
+                        </ul>
+                        <div class="panel-footer">
+                            <a class="btn btn-lg btn-block btn-danger" href="#">DEPOSIT NOW!</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- /item -->
+
+                <!-- item -->
+                <div class="col-md-4 col-sm-6 col-xs-6 text-center">
+                    <?php $packet = $self -> check_packet_pd (10000000) ;?>
+                     <?php if(count($packet) > 0) { ?>
+                            <div class="ribbon-wrapper">
+                                <?php if (intval($packet['status']) === 0) {?>
+                                <div class="ribbon-design">Watting</div>
+                                <?php } else { ?>
+                                <div class="ribbon-design red">Actived</div>
+                                <?php }?>
+                            </div>
+                        <?php }?>
+                    <div class="panel panel-warning panel-pricing">
+                        <div class="panel-heading">
+                            <i class="fa fa-desktop"></i>
+                            <h3>Plan 2</h3>
+                        </div>
+                        <div class="panel-body text-center">
+                            <p><strong>0.1 BTC / 70 days</strong></p>
+                        </div>
+                        <ul class="list-group text-center">
+                            <li class="list-group-item"><i class="fa fa-check"></i> 3% daily for 70 days</li>
+                            <li class="list-group-item"><i class="fa fa-check"></i> Referral Program 5%</li>
+                            <li class="list-group-item"><i class="fa fa-check"></i> Binary Bonuses 10%</li>
+                        </ul>
+                        <div class="panel-footer">
+                            <a class="btn btn-lg btn-block btn-warning" href="#">DEPOSIT NOW!</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- /item -->
+
+            </div>
+        </div>
+    </section>
+
         <div class="main-dashboard">
             <div class="row">
       <div class="col-md-12">
-      <?php if(count($pds) > 0){?> 
-         <div class="panel panel-default">
-            <div class="panel-body">
-               <div class="row">
-                  <div class="col-md-12 col-sm-12 col-xs-12" id="no-more-tables">
-                     <table id="datatable" class="table table-striped table-bordered">
-                        <thead>
-                           <tr>
- 							                <th>Code</th>
-                              <th>Date Created</th>
-                              <th>Packet</th>
-                              <th>Profit</th>
-                              <th>Time</th>
-                           </tr>
-                        </thead>
-                        <tbody>
-                           <?php foreach ($pds as $value=> $key){?> 
-                           <tr>
-        					<td data-title="Code">#<?php echo $key['pd_number'] ?></td>
-                            <td data-title="Date Created"><?php echo date("Y-m-d H:i:A", strtotime($key['date_added'])); ?></td>
-                              
-                            <td data-title="Packet">
-                              	<?php echo (doubleval($key['filled']) / 100000000) ?> BTC
-                            </td>
-                            <td data-title="Profit"> <?php echo (doubleval($key['max_profit']) / 100000000) ?> BTC</td>
-                      
-                            <td data-title="Time"> <span style="color:; font-size:15px;" class="text-warning countdown" data-countdown="<?php echo  $key['date_finish'] ?>"> </span> </td>
-                           </tr>
-                           <?php }?> 
-                        </tbody>
-                     </table>
-                  </div>
-               </div>
-              
-               
-            </div>
-         </div>
-         <?php } ?>
-
+    
          </div>
           <h3 style="margin-top: 30px; float: left;width: 100%" class="text-center">List Investment</h3>    
 
@@ -371,5 +461,6 @@
 
       </div>
    </div>
-</div>
+
+ </div>
 </div><?php echo $self->load->controller('common/footer') ?>

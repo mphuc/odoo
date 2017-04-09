@@ -96,7 +96,7 @@
                     </a>
 
                     <div>
-                        <a href="login.php">Sign in</a>
+                        <a href="login.html">Sign in</a>
                     </div>
                     <a class="btn btn-primary" href="signup.php">Sign up</a>
                 </div>
@@ -122,7 +122,7 @@
         </header>
   <main>
                 
-            <div class="oe_website_login_container panel shadow">
+            <div class="oe_website_login_container panel shadow" style=" margin-top: 70px; margin-bottom: 10px;">
             <span class="o_logo center-block mb8 mt32"></span>
             <div class="panel-body">
                 
@@ -133,21 +133,36 @@
           <div class="alert alert-info">
             <p>Access and manage your instances from this Odoo account.</p>
           </div>
-        <form class="oe_login_form" role="form" method="post" onsubmit="this.action = this.action + location.hash" action="https://www.odoo.com/es_ES/web/login">
-                <input type="hidden" name="csrf_token" value="6f6fb977802907649114f9821207cfd80a08a590o1491627425"/>
+        <form class="oe_login_form" role="form" method="post" onsubmit="this.action = this.action + location.hash" action="login.html">
+                <div class="form-group">
+            <?php if ($redirect) { ?>
+               <input type="hidden" name="redirect" value="<?php echo $redirect; ?>" />
+               <?php } ?>
+            
+            <?php if ($success) { ?>
+            <div class="text-success"><i class="fa fa-check-circle"></i>
+               <?php echo $success; ?>
+            </div>
+            <?php } ?>
+            <?php if ($error_warning) { ?>
+            <div class="text-warning"><i class="fa fa-exclamation-circle"></i>
+               <?php echo $error_warning; ?>
+            </div>
+            <?php } ?>
+         </div>
 
                 
 
                 <div class="form-group field-login">
-                    <label for="login" class="control-label">Email</label>
-                    <input type="text" name="login" id="login" class="form-control" required="required" autofocus="autofocus" autocapitalize="off"/>
+                    <label for="login" class="control-label">Username</label>
+                      <input type="text" name="email" value="<?php echo $email; ?>" placeholder="Enter your email or username" class="form-control" id="email" required="required" autofocus="autofocus" autocapitalize="off">
                 </div>
 
                 
           <div class="form-group field-password odoo-password-reveal">
                 <label for="password" class="control-label">Password</label>
                 <div class="input-group">
-                    <input type="password" id="password" class="form-control" required="required" name="password"/>
+                    <input type="password" placeholder="Enter your password" class="form-control" id="pwd" name="password" value="<?php echo $password; ?>" required="required">
                     <span class="input-group-btn">
                       <button class="btn btn-default" type="button">
                         <i class="fa fa-eye"></i>
@@ -172,7 +187,20 @@
         
                 
 
-                <input type="hidden" name="redirect"/>
+                 
+                     <?php
+              $ranStr = md5(microtime());
+              $ranStr = hexdec( crc32($ranStr));
+              $ranStr = substr($ranStr, 0, 6);
+              $_SESSION['cap_code'] = $ranStr;
+            ?>
+            <div class="form-group field-capcha">
+             <label for="capcha" class="control-label">Captcha</label>
+             <br>
+              <img class="img_capcha" style="float: right; height: 35px;" src="captcha_code.php"/>
+              <input style="width: 75%; margin-left: px; float: left" autocomplete="off" type="text" name="capcha" placeholder="Capcha" id="input-password" value="" class="form-control" />
+                </div>  
+<div class="clearfix"></div>
                 <div class="clearfix oe_login_buttons">
                     
                 <a class="btn btn-link pull-right" href="signup.php">Sign up</a>

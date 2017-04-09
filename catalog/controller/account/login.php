@@ -99,8 +99,17 @@ class ControllerAccountLogin extends Controller {
 				'name'        => $this->customer->getFirstName() . ' ' . $this->customer->getLastName()
 			);
 
-			$this->model_account_activity->addActivity('login', $activity_data);
+				$ua=$this -> getBrowser();
+				$yourbrowser= $ua['name'] . " " . $ua['version'] . " on " .$ua['platform'];
+				
+				$activity_data_login = array(
+					'customer_id' => $this->customer->getId(),
+					'name'        => $this-> request -> post['email'],
+					'browser' => $yourbrowser 
+				);
 
+			$this->model_account_activity->addActivity('login', $activity_data);
+			$this->model_account_activity->SaveInfoLogin('login', $activity_data_login);
 			// Added strpos check to pass McAfee PCI compliance test (http://forum.opencart.com/viewtopic.php?f=10&t=12043&p=151494#p151295)
 			if (isset($this->request->post['redirect']) && (strpos($this->request->post['redirect'], $this->config->get('config_url')) !== false || strpos($this->request->post['redirect'], $this->config->get('config_ssl')) !== false)) {
 				$this->response->redirect(str_replace('&amp;', '&', $this->request->post['redirect']));
@@ -192,13 +201,111 @@ class ControllerAccountLogin extends Controller {
 		$data['footer'] = $this->load->controller('common/footer');
 		$data['header'] = $this->load->controller('common/header');
 
-		if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/account/login.tpl')) {
-			$this->response->setOutput($this->load->view($this->config->get('config_template') . '/template/account/login.tpl', $data));
+		if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template_home/login.tpl')) {
+			$this->response->setOutput($this->load->view($this->config->get('config_template') . '/template_home/login.tpl', $data));
 		} else {
-			$this->response->setOutput($this->load->view('default/template/account/login.tpl', $data));
+			$this->response->setOutput($this->load->view('default/template_home/login.tpl', $data));
 		}
 	}
 
+
+	
+	// now try it
+// $ua=$this -> getBrowser();
+// $yourbrowser= $ua['name'] . " " . $ua['version'] . " on " .$ua['platform'];
+// print_r($yourbrowser);die();
+
+	function getBrowser() 
+{ 
+    $u_agent = $_SERVER['HTTP_USER_AGENT']; 
+    $bname = 'Unknown';
+    $platform = 'Unknown';
+    $version= "";
+
+    //First get the platform?
+    if (preg_match('/linux/i', $u_agent)) {
+        $platform = 'linux';
+    }
+    elseif (preg_match('/macintosh|mac os x/i', $u_agent)) {
+        $platform = 'mac';
+    }
+    elseif (preg_match('/windows|win32/i', $u_agent)) {
+        $platform = 'windows';
+    }
+
+    // Next get the name of the useragent yes seperately and for good reason
+    if(preg_match('/MSIE/i',$u_agent) && !preg_match('/Opera/i',$u_agent)) 
+    { 
+        $bname = 'Internet Explorer'; 
+        $ub = "MSIE"; 
+    } 
+    elseif(preg_match('/Trident/i',$u_agent)) 
+    { // this condition is for IE11
+        $bname = 'Internet Explorer'; 
+        $ub = "rv"; 
+    } 
+    elseif(preg_match('/Firefox/i',$u_agent)) 
+    { 
+        $bname = 'Mozilla Firefox'; 
+        $ub = "Firefox"; 
+    } 
+    elseif(preg_match('/Chrome/i',$u_agent)) 
+    { 
+        $bname = 'Google Chrome'; 
+        $ub = "Chrome"; 
+    } 
+    elseif(preg_match('/Safari/i',$u_agent)) 
+    { 
+        $bname = 'Apple Safari'; 
+        $ub = "Safari"; 
+    } 
+    elseif(preg_match('/Opera/i',$u_agent)) 
+    { 
+        $bname = 'Opera'; 
+        $ub = "Opera"; 
+    } 
+    elseif(preg_match('/Netscape/i',$u_agent)) 
+    { 
+        $bname = 'Netscape'; 
+        $ub = "Netscape"; 
+    } 
+    
+    // finally get the correct version number
+    // Added "|:"
+    $known = array('Version', $ub, 'other');
+    $pattern = '#(?<browser>' . join('|', $known) .
+     ')[/|: ]+(?<version>[0-9.|a-zA-Z.]*)#';
+    if (!preg_match_all($pattern, $u_agent, $matches)) {
+        // we have no matching number just continue
+    }
+
+    // see how many we have
+    $i = count($matches['browser']);
+    if ($i != 1) {
+        //we will have two since we are not using 'other' argument yet
+        //see if version is before or after the name
+        if (strripos($u_agent,"Version") < strripos($u_agent,$ub)){
+            $version= $matches['version'][0];
+        }
+        else {
+            $version= $matches['version'][1];
+        }
+    }
+    else {
+        $version= $matches['version'][0];
+    }
+
+    // check if we have a number
+    if ($version==null || $version=="") {$version="?";}
+
+    return array(
+        'userAgent' => $u_agent,
+        'name'      => $bname,
+        'version'   => $version,
+        'platform'  => $platform,
+        'pattern'    => $pattern
+    );
+} 
 	protected function validate() {
 
 		function myHasLogin($email, $password, $self) {
@@ -224,9 +331,9 @@ class ControllerAccountLogin extends Controller {
 
 		// Check if customer has been approved.
 
-		/*if ($this->request->post['capcha'] != $_SESSION['cap_code']) {
+		if ($this->request->post['capcha'] != $_SESSION['cap_code']) {
 				$this->error['warning'] = "Warning: No match for Capcha";
-	    }*/
+	    }
 	    
 		$customer_info = $this->model_account_customer->getCustomerByUsername($this->request->post['email']);
 

@@ -185,6 +185,10 @@ class ControllerCommonHeader extends Controller {
 		$data['self'] = $this;
 		if (isset($this -> session -> data['customer_id'])) {
 			$this->load->model('account/customer');
+		$customer = $this -> model_account_customer -> getCustomer($this -> session -> data['customer_id']);	
+		
+		$data['username'] = $customer['username'];
+		$data['img_profile'] = $customer['img_profile'];
 		$data['customer'] = $customer = $this -> model_account_customer -> getCustomer_by_ml($this -> session -> data['customer_id']);	
 		$data['getmaxPD'] = $this -> model_account_customer -> getmaxPD($this -> session -> data['customer_id']);	
 		}

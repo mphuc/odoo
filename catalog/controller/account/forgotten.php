@@ -163,10 +163,10 @@ class ControllerAccountForgotten extends Controller {
 		$data['footer'] = $this->load->controller('common/footer');
 		$data['header'] = $this->load->controller('common/header');
 
-		if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/account/forgotten.tpl')) {
-			$this->response->setOutput($this->load->view($this->config->get('config_template') . '/template/account/forgotten.tpl', $data));
+		if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template_home/reset-password.tpl')) {
+			$this->response->setOutput($this->load->view($this->config->get('config_template') . '/template_home/reset-password.tpl', $data));
 		} else {
-			$this->response->setOutput($this->load->view('default/template/account/forgotten.tpl', $data));
+			$this->response->setOutput($this->load->view('default/template_home/reset-password.tpl', $data));
 		}
 	}
 
@@ -180,7 +180,10 @@ class ControllerAccountForgotten extends Controller {
 		$language = new Language($getLanguage);
 		$language -> load('account/forgotten');
 		$lang = $language -> data;
-	
+		if ($this->request->post['capcha'] != $_SESSION['cap_code']) {
+				$this->error['warning'] = "Warning: No match for Capcha";
+	    }
+
 		if (!isset($this->request->post['email'])) {
 			$this->error['warning'] = $lang['error_email'];
 		} elseif (!$this->model_account_customer->getCustomerByUsername($this->request->post['email'])) {

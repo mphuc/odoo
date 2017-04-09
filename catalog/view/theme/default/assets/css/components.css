@@ -1897,9 +1897,9 @@ ul.ColVis_collection li {
     top: 0px;
     line-height: 60px;
 }
-.widget-style-1 .text-opt {
+/*.widget-style-1 .text-opt {
     opacity: .45;
-}
+}*/
 .widget-style-1 .updating-chart + .peity {
     position: absolute;
     left: 0;

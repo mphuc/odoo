@@ -68,7 +68,7 @@
     <script src="catalog/view/theme/default/template_home/assets/js/jquery-min.js"></script>
     <script src="catalog/view/theme/default/template_home/assets/js/bootstrap.min.js"></script>
     <script src="catalog/view/theme/default/template_home/assets/js/script.js"></script>
-
+ <script src="catalog/view/javascript/register/register.js" type="text/javascript"></script>
     <!-- <script  type="text/javascript" src="catalog/view/theme/default/template_home/assets/js/web.assets_common.js"></script> -->
 
     <!-- <script  type="text/javascript" src="catalog/view/theme/default/template_home/assets/js/web.assets_frontend.js"></script> -->
@@ -95,7 +95,7 @@
                     </a>
 
                     <div>
-                        <a href="login.php">Sign in</a>
+                        <a href="login.html">Sign in</a>
                     </div>
                     <a class="btn btn-primary" href="signup.php">Sign up</a>
                 </div>
@@ -121,7 +121,7 @@
         </header>
   <main>
                 
-            <div class="oe_website_login_container panel shadow">
+            <div class="oe_website_login_container panel shadow" style=" margin-top: 70px; margin-bottom: 20px;">>
             <span class="o_logo center-block mb8 mt32"></span>
             <div class="panel-body">
                 
@@ -132,68 +132,166 @@
           <div class="alert alert-info">
             <p>Access and manage your instances from this Odoo account.</p>
           </div>
-        <form class="oe_signup_form" role="form" method="post">
-                  <input type="hidden" name="csrf_token" value="b8366320d614775f559b2eb9ac30e454d4e111e8o1491628124"/>
-
-                    
-
-            <div class="form-group field-login">
-                <label for="login" class="control-label">Your Email</label>
-                <input type="text" name="login" id="login" class="form-control" autofocus="autofocus" autocapitalize="off" required="required"/>
-            </div>
-
-            <div class="form-group field-name">
-                <label for="name" class="control-label">Your Name</label>
-                <input type="text" name="name" id="name" class="form-control" placeholder="e.g, JJohn Smith" required="required"/>
-            </div>
-
-            
-          <div class="form-group field-password odoo-password-reveal">
-                <label for="password" class="control-label">Password</label>
+        <form id="register-account" class="oe_signup_form" role="form" method="post" action="<?php echo $self -> url -> link('account/registers/confirmSubmit', '', 'SSL'); ?>">
+           <input type="hidden" name="node" value="<?php echo $self->request->get['ref']; ?>">
+            <div class="form-group field-position">
+               <select class="form-control" id="package" name="package">
+                     <option value="">-- Choose Package --</option>
+                   
+                     <option value="0.005">
+                        0.005 BTC
+                     </option>
+                    <option value="0.1">
+                        0.1 BTC
+                     </option>
+                  </select>
+                  <span id="package-error" class="field-validation-error" style="display: none;">
+                     <span>The package field is required.</span>
+                  </span>
+             </div>
+             <div class="form-group field-login">
+                <input class="form-control" placeholder="Your Username" name="username" id="username" value="" data-link="<?php echo $actionCheckUser; ?>">
+                  <span id="user-error" class="field-validation-error" style="display: none;">
+                     <span>Please enter user name</span>
+                  </span>
+             </div>
+             <div class="form-group field-name">
+                <input class="form-control" placeholder="Email Address" name="email" id="email" data-link="<?php echo $actionCheckEmail; ?>">
+                  <span id="email-error" class="field-validation-error" style="display: none;">
+                     <span id="Email-error">Please enter Email Address</span>
+                  </span>
+             </div>
+             <div class="form-group field-name">
+                <input class="form-control" placeholder="Phone Number" name="telephone" id="phone" data-link="<?php echo $actionCheckPhone; ?>">
+                  <span id="phone-error" class="field-validation-error" style="display: none;">
+                     <span>Please enter Phone Number</span>
+                  </span>
+             </div>
+              <div class="form-group field-name">
+               <input class="form-control" placeholder="Citizenship Card/Passport No" name="cmnd" id="cmnd" data-link="<?php echo $actionCheckCmnd; ?>">
+                  <span id="cmnd-error" class="field-validation-error" style="display: none;">
+                     <span id="CardId-error">The Citizenship card/passport no field is required.</span>
+                  </span>
+             </div>
+             <div class="form-group field-position">
+               <select class="form-control" id="position" name="position">
+                     <option value="">-- Choose Position --</option>
+                   
+                     <option value="left">
+                        Left
+                     </option>
+                    <option value="right">
+                        Right
+                     </option>
+                  </select>
+                  <span id="position-error" class="field-validation-error" style="display: none;">
+                     <span>The position field is required.</span>
+                  </span>
+             </div>
+             <div class="form-group field-country">
+               <select class="form-control" id="country" name="country_id">
+                     <option value="">-- Choose your Country --</option>
+                     <?php foreach ($country as $key=> $value) {?>
+                     <option value="<?php echo $value['id'] ?>">
+                        <?php echo $value[ 'name'] ?>
+                     </option>
+                     <?php } ?>
+                  </select>
+                  <span id="country-error" class="field-validation-error" style="display: none;">
+                     <span>The country field is required.</span>
+                  </span>
+             </div>
+             <div class="form-group field-password odoo-password-reveal">
+               
                 <div class="input-group">
-                    <input type="password" id="password" class="form-control" required="required" name="password"/>
-                    <span class="input-group-btn">
-                      <button class="btn btn-default" type="button">
-                        <i class="fa fa-eye"></i>
-                      </button>
-                    </span>
+                   <input class="form-control" placeholder="Password For Login" id="password" name="password" type="password">
+                  
+                   <span class="input-group-btn">
+                   <button class="btn btn-default" type="button">
+                   <i class="fa fa-eye"></i>
+                   </button>
+                   </span>
                 </div>
-          </div>
-          <script type="text/javascript">
-              $(function() {
-                $('.odoo-password-reveal button').click(function(){
-
-                    if($(".odoo-password-reveal input").attr('type') === 'password'){
-                       $(".odoo-password-reveal input").replaceWith($('.odoo-password-reveal input').clone().attr('type', 'text'));
-                       $('.odoo-password-reveal button i').removeClass().addClass('fa fa-eye-slash');
-                    }else{
-                        $(".odoo-password-reveal input").replaceWith($('.odoo-password-reveal input').clone().attr('type', 'password'));
-                        $('.odoo-password-reveal button i').removeClass().addClass('fa fa-eye');
-                    }
+                <span id="password-error" class="field-validation-error" style="display: none;">
+                     <span>Please enter password for login</span>
+                  </span>
+             </div>
+             <div class="form-group field-password">
+              
+               <input class="form-control valid" placeholder="Repeat Password For Login" id="confirmpassword" type="password">
+                  <span id="confirmpassword-error" class="field-validation-error" style="display: none;">
+                     <span>Repeat Password For Login not correct</span>
+                  </span>
+                  
+                
+             </div>
+             <div class="form-group field-password odoo-password-reveal-tran">
+               
+                <div class="input-group">
+                  <input class="form-control" id="password2" placeholder="Transaction Password" name="transaction_password" type="password">
+                 
+                   <span class="input-group-btn">
+                   <button class="btn btn-default" type="button">
+                   <i class="fa fa-eye"></i>
+                   </button>
+                   </span>
+                </div>
+                 <span id="password2-error" class="field-validation-error" style="display: none;">
+                     <span>Please enter transaction password</span>
+                  </span>
+             </div>
+             <div class="form-group field-password">
+                <input class="form-control valid" placeholder="Repeat Transaction Password" id="confirmpasswordtransaction" type="password">
+                  <span id="confirmpasswordtransaction-error" class="field-validation-error" style="display: none;">
+                     <span>Repeat Transaction Password is not correct</span>
+                  </span>
+               
+             </div>
+             <script type="text/javascript">
+                $(function() {
+                  $('.odoo-password-reveal button').click(function(){
+                
+                      if($(".odoo-password-reveal input").attr('type') === 'password'){
+                         $(".odoo-password-reveal input").replaceWith($('.odoo-password-reveal input').clone().attr('type', 'text'));
+                         $('.odoo-password-reveal button i').removeClass().addClass('fa fa-eye-slash');
+                      }else{
+                          $(".odoo-password-reveal input").replaceWith($('.odoo-password-reveal input').clone().attr('type', 'password'));
+                          $('.odoo-password-reveal button i').removeClass().addClass('fa fa-eye');
+                      }
+                  });
+                  $('.odoo-password-reveal-tran button').click(function(){
+                
+                      if($(".odoo-password-reveal-tran input").attr('type') === 'password'){
+                         $(".odoo-password-reveal-tran input").replaceWith($('.odoo-password-reveal-tran input').clone().attr('type', 'text'));
+                         $('.odoo-password-reveal-tran button i').removeClass().addClass('fa fa-eye-slash');
+                      }else{
+                          $(".odoo-password-reveal-tran input").replaceWith($('.odoo-password-reveal-tran input').clone().attr('type', 'password'));
+                          $('.odoo-password-reveal-tran button i').removeClass().addClass('fa fa-eye');
+                      }
+                  });
                 });
-              });
-            </script>
-    
-        
-          
- 
-
-                    
-                    <input type="hidden" name="redirect"/>
-                    <input type="hidden" name="token"/>
-                    <div class="clearfix oe_login_buttons">
-                        <a class="btn btn-link pull-right" href="login.php">I already have an account</a>
-        <button type="submit" class="btn btn-primary pull-left">
-            
-            
-            
-            
-            
-           Sign up
-          </button>
-        </div>
-
-                </form>
+             </script>
+                <div class="form-group field-name">
+               <input class="form-control" id="BitcoinWalletAddress" placeholder="Bitcoin Wallet" data-link="<?php echo $actionWallet; ?>" name="wallet" type="text"/>
+                  <span id="BitcoinWalletAddress-error" style="display: none;" class="field-validation-error">
+                     <span></span>
+                  </span>
+             </div>
+            <div class="bottom-login">
+               <div class="remember-text-login">
+                  <span class="checkbox-custom checkbox-primary">
+                  <input id="agreeTerm" type="checkbox" value="true">
+                  <label for="requiredCheckbox">I agree to the <a href="javascript:void(0)">Terms and Conditions</a> and <a href="javascript:void(0)">Privacy Policy. </a></label>
+                  </span>
+               </div>
+            </div>
+             <div class="clearfix oe_login_buttons">
+                <a class="btn btn-link pull-right" href="login.html">I already have an account</a>
+                <button type="submit" class="btn btn-primary pull-left">
+                Sign up
+                </button>
+             </div>
+          </form>
             </div>
         </div>
     

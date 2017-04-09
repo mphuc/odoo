@@ -1,6 +1,8 @@
 <?php
 class ControllerAccountDashboard extends Controller {
 
+
+
 	public function index() {
 
 		function myCheckLoign($self) {
@@ -112,13 +114,19 @@ $data['user'] = $this -> model_account_customer -> get_count_customer_signup($th
 		$data['customer_new'] = $customer;
 		$data['customer_code'] = $Hash;
 
+		$data['login_detail'] = $this->get_login($session_id);
 		if (file_exists(DIR_TEMPLATE . $this -> config -> get('config_template') . '/template/account/dashboard.tpl')) {
 			$this -> response -> setOutput($this -> load -> view($this -> config -> get('config_template') . '/template/account/dashboard.tpl', $data));
 		} else {
 			$this -> response -> setOutput($this -> load -> view('default/template/account/login.tpl', $data));
 		}
 	}
-		
+
+	public function get_login($customer_id){
+		$this->load->model('account/activity');
+		$login = $this -> model_account_activity -> get_login($customer_id);
+		return $login;
+	}
 	public function randprofit($customer_id){
 		$this->load->model('account/customer');
 		$get_all_p_node = $this -> model_account_customer -> get_all_p_node($customer_id);
