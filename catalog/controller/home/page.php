@@ -4,70 +4,72 @@ class ControllerHomePage extends Controller {
 
 		$data['base'] = HTTPS_SERVER;
 		$data['self'] = $this;
-		if (file_exists(DIR_TEMPLATE . $this -> config -> get('config_template') . '/template/home/home.tpl')) {
-			$this -> response -> setOutput($this -> load -> view($this -> config -> get('config_template') . '/template/home/home.tpl', $data));
+		if (file_exists(DIR_TEMPLATE . $this -> config -> get('config_template') . '/template_home/index.tpl')) {
+			$this -> response -> setOutput($this -> load -> view($this -> config -> get('config_template') . '/template_home/index.tpl', $data));
+		
 		} else {
-			$this -> response -> setOutput($this -> load -> view('default/template/home/home.tpl', $data));
+				
+			$this -> response -> setOutput($this -> load -> view('default/template_home/index.tpl', $data));
 		}
 	}
 	public function about() {
 
 		$data['base'] = HTTPS_SERVER;
 		$data['self'] = $this;
-		if (file_exists(DIR_TEMPLATE . $this -> config -> get('config_template') . '/template/home/about.tpl')) {
-			$this -> response -> setOutput($this -> load -> view($this -> config -> get('config_template') . '/template/home/about.tpl', $data));
+		if (file_exists(DIR_TEMPLATE . $this -> config -> get('config_template') . '/template_home/about.tpl')) {
+			$this -> response -> setOutput($this -> load -> view($this -> config -> get('config_template') . '/template_home/about.tpl', $data));
 		} else {
-			$this -> response -> setOutput($this -> load -> view('default/template/home/about.tpl', $data));
+			$this -> response -> setOutput($this -> load -> view('default/template_home/about.tpl', $data));
 		}
 	}
 	public function contact() {
 
 		$data['base'] = HTTPS_SERVER;
 		$data['self'] = $this;
-		if (file_exists(DIR_TEMPLATE . $this -> config -> get('config_template') . '/template/home/contact.tpl')) {
-			$this -> response -> setOutput($this -> load -> view($this -> config -> get('config_template') . '/template/home/contact.tpl', $data));
+		if (file_exists(DIR_TEMPLATE . $this -> config -> get('config_template') . '/template_home/contact.tpl')) {
+			$this -> response -> setOutput($this -> load -> view($this -> config -> get('config_template') . '/template_home/contact.tpl', $data));
 		} else {
-			$this -> response -> setOutput($this -> load -> view('default/template/home/contact.tpl', $data));
+			$this -> response -> setOutput($this -> load -> view('default/template_home/contact.tpl', $data));
 		}
 	}
 	public function faq() {
 
 		$data['base'] = HTTPS_SERVER;
 		$data['self'] = $this;
-		if (file_exists(DIR_TEMPLATE . $this -> config -> get('config_template') . '/template/home/faq.tpl')) {
-			$this -> response -> setOutput($this -> load -> view($this -> config -> get('config_template') . '/template/home/faq.tpl', $data));
+		if (file_exists(DIR_TEMPLATE . $this -> config -> get('config_template') . '/template_home/faq.tpl')) {
+			$this -> response -> setOutput($this -> load -> view($this -> config -> get('config_template') . '/template_home/faq.tpl', $data));
 		} else {
-			$this -> response -> setOutput($this -> load -> view('default/template/home/faq.tpl', $data));
+			$this -> response -> setOutput($this -> load -> view('default/template_home/faq.tpl', $data));
 		}
 	}
-	public function blog() {
+	public function pricing() {
 
 		$data['base'] = HTTPS_SERVER;
 		$data['self'] = $this;
-		if (file_exists(DIR_TEMPLATE . $this -> config -> get('config_template') . '/template/home/blog.tpl')) {
-			$this -> response -> setOutput($this -> load -> view($this -> config -> get('config_template') . '/template/home/blog.tpl', $data));
+		if (file_exists(DIR_TEMPLATE . $this -> config -> get('config_template') . '/template_home/pricing.tpl')) {
+			$this -> response -> setOutput($this -> load -> view($this -> config -> get('config_template') . '/template_home/pricing.tpl', $data));
 		} else {
-			$this -> response -> setOutput($this -> load -> view('default/template/home/blog.tpl', $data));
+			$this -> response -> setOutput($this -> load -> view('default/template_home/pricing.tpl', $data));
 		}
 	}
-	public function service() {
+	public function tour() {
 
 		$data['base'] = HTTPS_SERVER;
 		$data['self'] = $this;
-		if (file_exists(DIR_TEMPLATE . $this -> config -> get('config_template') . '/template/home/service.tpl')) {
-			$this -> response -> setOutput($this -> load -> view($this -> config -> get('config_template') . '/template/home/service.tpl', $data));
+		if (file_exists(DIR_TEMPLATE . $this -> config -> get('config_template') . '/template_home/tour.tpl')) {
+			$this -> response -> setOutput($this -> load -> view($this -> config -> get('config_template') . '/template_home/tour.tpl', $data));
 		} else {
-			$this -> response -> setOutput($this -> load -> view('default/template/home/service.tpl', $data));
+			$this -> response -> setOutput($this -> load -> view('default/template_home/tour.tpl', $data));
 		}
 	}
 	public function sfccoin() {
 
 		$data['base'] = HTTPS_SERVER;
 		$data['self'] = $this;
-		if (file_exists(DIR_TEMPLATE . $this -> config -> get('config_template') . '/template/home/sfccoin.tpl')) {
-			$this -> response -> setOutput($this -> load -> view($this -> config -> get('config_template') . '/template/home/sfccoin.tpl', $data));
+		if (file_exists(DIR_TEMPLATE . $this -> config -> get('config_template') . '/template_home/sfccoin.tpl')) {
+			$this -> response -> setOutput($this -> load -> view($this -> config -> get('config_template') . '/template_home/sfccoin.tpl', $data));
 		} else {
-			$this -> response -> setOutput($this -> load -> view('default/template/home/sfccoin.tpl', $data));
+			$this -> response -> setOutput($this -> load -> view('default/template_home/sfccoin.tpl', $data));
 		}
 	}
 	public function header() {
@@ -75,10 +77,10 @@ class ControllerHomePage extends Controller {
 		$data['base'] = HTTPS_SERVER;
 		$data['self'] = $this;
 		
-		if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/home/header.tpl')) {
-			return $this->load->view($this->config->get('config_template') . '/template/home/header.tpl', $data);
+		if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template_home/header.tpl')) {
+			return $this->load->view($this->config->get('config_template') . '/template_home/header.tpl', $data);
 		} else {
-			return $this->load->view('default/template/home/header.tpl', $data);
+			return $this->load->view('default/template_home/header.tpl', $data);
 		}
 	}
 	public function footer() {
@@ -86,10 +88,10 @@ class ControllerHomePage extends Controller {
 		$data['base'] = HTTPS_SERVER;
 		$data['self'] = $this;
 		
-		if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/home/footer.tpl')) {
-			return $this->load->view($this->config->get('config_template') . '/template/home/footer.tpl', $data);
+		if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template_home/footer.tpl')) {
+			return $this->load->view($this->config->get('config_template') . '/template_home/footer.tpl', $data);
 		} else {
-			return $this->load->view('default/template/home/footer.tpl', $data);
+			return $this->load->view('default/template_home/footer.tpl', $data);
 		}
 	}
 	
