@@ -24,7 +24,7 @@
 
                     <div class="col-md-3 col-xs-6">
                         <div class="widget-panel widget-style-1 bg-primary">
-                            <h2 class="m-0 text-white counter font-40 font-400 text-center">1349</h2>
+                            <h2 class="m-0 text-white counter font-40 font-400 text-center"><?php echo $getCWallet; ?> BTC</h2>
                             <div class="text-white text-opt  m-t-5 text-center font-12">C Wallet</div>
                             
                         </div>
@@ -33,7 +33,7 @@
 
                     <div class="col-md-3 col-xs-6">
                         <div class="widget-panel widget-style-1 bg-success">
-                            <h2 class="m-0 text-white counter font-40 font-400 text-center">$12,5 M</h2>
+                            <h2 class="m-0 text-white counter font-40 font-400 text-center"><?php echo $getRWallet; ?> BTC</h2>
                             <div class="text-white text-opt m-t-5 text-center font-12">O Wallet</div>
                             
                         </div>
@@ -41,7 +41,7 @@
 
                     <div class="col-md-3 col-xs-6">
                         <div class="widget-panel widget-style-1 bg-info">
-                            <h2 class="m-0 text-white counter font-40 font-400 text-center">325</h2>
+                            <h2 class="m-0 text-white counter font-40 font-400 text-center"><?php echo $total_pd_left; ?> BTC</h2>
                             <div class="text-white text-opt m-t-5 text-center font-12">Amount Left</div>
                             
                         </div>
@@ -49,7 +49,7 @@
 
                     <div class="col-md-3 col-xs-6">
                         <div class="widget-panel widget-style-1 bg-purple">
-                            <h2 class="m-0 text-white counter font-40 font-400 text-center">+56%</h2>
+                            <h2 class="m-0 text-white counter font-40 font-400 text-center"><?php echo $total_pd_right; ?> BTC</h2>
                             <div class="text-white text-opt m-t-5 text-center font-12">Amount Right</div>
                             
                         </div>
@@ -68,42 +68,27 @@
                             </div>
                             <div class="card-box-content p-l-0 p-r-0 btn-compoenent">
                                 <div class="row">
-                                    <div class="col-xs-2">
-                                        <div class="item-quick-access">
-                                            <i class="fa fa-file-image-o" aria-hidden="true"></i>
-                                            <p><a href="">Welcome Letter</a></p>
-                                        </div>
-                                    </div>
-                                    <div class="col-xs-2">
+                                   
+                                    <div class="col-xs-4">
                                         <div class="item-quick-access">
                                             <i class="fa fa-gear" aria-hidden="true"></i>
                                              <p><a href="your-profile.html">Account Settings</a></p>
                                         </div>
                                     </div>
-                                    <div class="col-xs-2">
+                                    <div class="col-xs-4">
                                         <div class="item-quick-access">
                                             <i class="fa fa-file-text-o" aria-hidden="true"></i>
-                                             <p><a href="">Invoices</a></p>
+                                             <p><a href="investment.html">Investment</a></p>
                                         </div>
                                     </div>
-                                    <div class="col-xs-2">
-                                        <div class="item-quick-access">
-                                            <i class="fa fa-area-chart" aria-hidden="true"></i>
-                                             <p><a href="">Task Report</a></p>
-                                        </div>
-                                    </div>
-                                    <div class="col-xs-2">
+                                   
+                                    <div class="col-xs-4">
                                         <div class="item-quick-access">
                                             <i class="fa fa-list" aria-hidden="true"></i>
-                                             <p><a href="">Withdrawal History</a></p>
+                                             <p><a href="withdraw">Withdrawal History</a></p>
                                         </div>
                                     </div>
-                                    <div class="col-xs-2">
-                                        <div class="item-quick-access">
-                                            <i class="fa fa-support" aria-hidden="true"></i>
-                                             <p><a href="">Help</a></p>
-                                        </div>
-                                    </div>
+                                   
                                 </div>
                             </div>
                         </div>

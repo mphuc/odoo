@@ -100,7 +100,7 @@ class ModelAccountPd extends Model {
 		$query = $this -> db -> query("
 			UPDATE " . DB_PREFIX . "customer_provide_donation SET 
 				status = '1',
-				date_finish = DATE_ADD(NOW(),INTERVAL + 90 DAY),
+				date_finish = DATE_ADD(NOW(),INTERVAL + 70 DAY),
 				date_update_profit = DATE_ADD(NOW(),INTERVAL + 1 DAY),
 				max_profit = '".$max_profit."'
 				WHERE id = '".$pd_id."'
@@ -271,6 +271,14 @@ class ModelAccountPd extends Model {
 				ON pd.id = inv.transfer_id
 			WHERE pd.id = ".$pd_id."
 		");
+		return $query -> row;
+	}
+	public function update_amount_invoice_pd($invoice_id, $amount){
+		$query = $this -> db -> query("
+			UPDATE " . DB_PREFIX . "customer_invoice_pd SET 
+				amount = '".$amount."',
+				WHERE invoice_id = '".$invoice_id."'
+			");
 		return $query -> row;
 	}
 	public function check_payment($customer_id){

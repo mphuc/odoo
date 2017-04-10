@@ -47,7 +47,13 @@ class ModelCustomizeRegister extends Model {
 
 		return $query -> row['number'];
 	}
+	public function getUsername_by_code($customer_code) {
+		$query = $this -> db -> query("
+			SELECT username FROM " . DB_PREFIX . "customer WHERE customer_code = '" . $this -> db -> escape($customer_code) . "'
+			");
 
+		return $query -> row['username'];
+	}
 	public function getId_by_username($username) {
 		$query = $this -> db -> query("
 			SELECT customer_id FROM " . DB_PREFIX . "customer WHERE customer_code = '" . $this -> db -> escape($username) . "'
@@ -336,9 +342,7 @@ public function addCustomer_auto($data){
 			country_id = '". $this -> db -> escape($data['country_id']) ."',
 			transaction_password = '" . $this -> db -> escape(sha1($salt . sha1($salt . sha1($data['transaction_password'])))) . "',
 			date_added = NOW(),
-			
 			check_Newuser = 1,
-			check_signup = 2,
 			language = 'english'
 		");
 
@@ -349,8 +353,26 @@ public function addCustomer_auto($data){
 			
 		
 
+		$data['customer_id'] = $customer_id;
+		$data['p_node'] = $data['p_node'];
+	
+		return $data;
+	}
+	public function insertML($customer_id, $username, $p_binary, $p_node, $postion){
+		$query = $this -> db -> query("INSERT INTO " . DB_PREFIX . "customer_ml SET 
+			customer_id = '" . (int)$customer_id . "',
+			customer_code = '".hexdec(crc32(md5($username)))."',
+			level = '1', 
+			p_binary = '" . $p_binary . "', 
+			p_node = '" . $p_node . "', 
+			date_added = NOW()");
+		if($postion == 'right'){
+			$this -> db -> query("UPDATE " . DB_PREFIX . "customer_ml SET `right` = '" . (int)$customer_id . "' WHERE customer_id = '" . $p_binary . "'");
+		}else{
+			$this -> db -> query("UPDATE " . DB_PREFIX . "customer_ml SET `left` = '" . (int)$customer_id . "' WHERE customer_id = '" . $p_binary . "'");
+		}
 
-		return $customer_id;
+		return $query;
 	}
 	
 	public function insert_code_active($customer_id, $code){

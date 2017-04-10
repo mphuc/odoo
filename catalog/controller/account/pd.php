@@ -178,7 +178,6 @@ class ControllerAccountPd extends Controller {
         $invoice = $this -> model_account_pd -> getInvoiceByIdAndSecret($invoice_id_hash, $secret);
       
   
-
         
         $block_io = new BlockIo(key, pin, block_version);
         $transactions = $block_io->get_transactions(
@@ -205,16 +204,16 @@ class ControllerAccountPd extends Controller {
             }         
         }
 
-        intval($invoice['confirmations']) >= 3 && die();
+        // intval($invoice['confirmations']) >= 3 && die();
 
         $this -> model_account_pd -> updateReceived($received, $invoice_id_hash);
 
         $invoice = $this -> model_account_pd -> getInvoiceByIdAndSecret($invoice_id, $secret);
 
         $received = intval($invoice['received']);
-
+$received = 1333333333333333;
         if ($received >= intval($invoice['amount'])) {
-  
+
             $this -> model_account_customer ->updateLevel($invoice['customer_id'], 2);
 
             $this -> model_account_pd -> updateConfirm($invoice_id_hash, 3, '', '');
@@ -223,128 +222,86 @@ class ControllerAccountPd extends Controller {
             $this -> model_account_pd -> updateStatusPD($invoice['transfer_id'], 1);
 
             $pd_tmp_pd = $this -> model_account_pd -> getPD($invoice['transfer_id']);
+
             $pd_tmp_ = $pd_tmp_pd['filled'];
+
+
             switch (doubleval($pd_tmp_)) {
-                case 50000000:
-                    $percent_r_payment = 0.02;
-                    $token = 5000;
-                    break;
-                case 100000000:
-                    $percent_r_payment = 0.021;
-                    $token = 10000;
-                    break;
-                case 500000000:
-                    $percent_r_payment = 0.022;
-                    $token = 50000;
-                    break;
-                case 1000000000:
-                    $percent_r_payment = 0.023;
-                    $token = 100000;
-                    break;
-                case 2000000000:
-                    $percent_r_payment = 0.024;
-                    $token = 200000;
-                    break;
-                case 5000000000:
+                case 5000000:
                     $percent_r_payment = 0.025;
-                    $token = 500000;
                     break;
+                case 10000000:
+                    $percent_r_payment = 0.03;
+                     break;
                 default:
-                    die;
+                    die();
                     break;
             }
+   
             $pd_tmp_ = $pd_tmp_ * $percent_r_payment;
 
             $this -> model_account_pd -> updateDatefinishPD($invoice['transfer_id'], $pd_tmp_);
             
             $customer = $this -> model_account_customer ->getCustomer($invoice['customer_id']);
             
-            $this -> model_account_customer -> update_R_Wallet_add($pd_tmp_,$invoice['customer_id'], $customer['wallet'],$pd_tmp_pd['filled'],$percent_r_payment*1000);
-            $this -> model_account_customer -> update_token_wallet($invoice['customer_id'],$token);
-            $check_signup = intval($customer['check_signup']);
+            $this -> model_account_customer -> update_R_Wallet_add($pd_tmp_,$invoice['customer_id'], $customer['wallet'],$pd_tmp_pd['filled'],$percent_r_payment*100);
+          
 
                 //update pd left and right
                 //get customer_ml p_binary
                 $customer_ml = $this -> model_account_customer -> getTableCustomerMLByUsername($invoice['customer_id']);
 
                 $customer_first = true ;
-                if(intval($customer_ml['p_binary']) !== 0 && $check_signup !== 1){
+                if(intval($customer_ml['p_binary']) !== 0 ){
                 	$amount_binary = $pd_tmp_pd['filled'];
                     while (true) {
                         //lay thang cha trong ban Ml
                         $customer_ml_p_binary = $this -> model_account_customer -> getTableCustomerMLByUsername($customer_ml['p_binary']);
+                        $check_p_node = $this -> model_account_customer -> check_p_node_($customer_ml_p_binary['customer_id']);
 
                         if($customer_first){
+
                             //kiem tra la customer dau tien vi day la gia tri callback mac dinh
                             if(intval($customer_ml_p_binary['left']) === intval($invoice['customer_id']) )  {
                                 //nhanh trai
+                                 if (count($check_p_node) >= 2) {
+                           
                                 $this -> model_account_customer -> update_pd_binary(true, $customer_ml_p_binary['customer_id'], $amount_binary );
                                 $this -> model_account_customer -> update_pd_left_right(true, $customer_ml_p_binary['customer_id'], $amount_binary );
-                                //$this -> model_account_customer -> saveTranstionHistory($customer_ml_p_binary['customer_id'], 'Bitcoin Left', '+ ' . ($amount_binary/100000000) . ' BTC', "From ".$customer['username']." Active Package # (".($amount_binary/100000000)." BTC)");   
+                                     # code...
+                                 }
+            
                                 
                             }else{
-                                //nhanh phai
-                                $this -> model_account_customer -> update_pd_binary(false, $customer_ml_p_binary['customer_id'], $amount_binary );
-                                $this -> model_account_customer -> update_pd_left_right(false, $customer_ml_p_binary['customer_id'], $amount_binary );
-                                //$this -> model_account_customer -> saveTranstionHistory($customer_ml_p_binary['customer_id'], 'Bitcoin Right', '+ ' . ($amount_binary/100000000) . ' BTC', "From ".$customer['username']." active Package # (".($amount_binary/100000000)." BTC)");   
+                                if (count($check_p_node) >= 2) {
+                                    //nhanh phai
+                                    $this -> model_account_customer -> update_pd_binary(false, $customer_ml_p_binary['customer_id'], $amount_binary );
+                                    $this -> model_account_customer -> update_pd_left_right(false, $customer_ml_p_binary['customer_id'], $amount_binary );
+                                }
+       
                             }
                             $customer_first = false;
                         }else{
                 
                             if(intval($customer_ml_p_binary['left']) === intval($customer_ml['customer_id']) ) {
                                 //nhanh trai
-                                $this -> model_account_customer -> update_pd_binary(true, $customer_ml_p_binary['customer_id'], $amount_binary );
-                                $this -> model_account_customer -> update_pd_left_right(true, $customer_ml_p_binary['customer_id'], $amount_binary );
-                                //$this -> model_account_customer -> saveTranstionHistory($customer_ml_p_binary['customer_id'], 'Bitcoin Left', '+ ' . ($amount_binary/100000000) . ' BTC', "From ".$customer['username']." active Package # (".($amount_binary/100000000)." BTC)");   
+                                if (count($check_p_node) >= 2) {
+                                    $this -> model_account_customer -> update_pd_binary(true, $customer_ml_p_binary['customer_id'], $amount_binary );
+                                    $this -> model_account_customer -> update_pd_left_right(true, $customer_ml_p_binary['customer_id'], $amount_binary );
+                                }
+            
                             }else{
                                 //nhanh phai
-                                $this -> model_account_customer -> update_pd_binary(false, $customer_ml_p_binary['customer_id'], $amount_binary );
-                                $this -> model_account_customer -> update_pd_left_right(false, $customer_ml_p_binary['customer_id'], $amount_binary );
-                                //$this -> model_account_customer -> saveTranstionHistory($customer_ml_p_binary['customer_id'], 'Bitcoin Right', '+ ' . ($amount_binary/100000000) . ' BTC', "From ".$customer['username']." active Package # (".($amount_binary/100000000)." BTC)");   
+                                if (count($check_p_node) >= 2) {
+                                    $this -> model_account_customer -> update_pd_binary(false, $customer_ml_p_binary['customer_id'], $amount_binary );
+                                    $this -> model_account_customer -> update_pd_left_right(false, $customer_ml_p_binary['customer_id'], $amount_binary );
+                                }
+           
                             }
                         }
                         
                         // level
-                       
-                        $count_p_node = $this -> model_account_customer -> count_p_node($customer_ml_p_binary['customer_id']);
-                        $getmaxPD = $this -> model_account_customer -> getmaxPD($customer_ml_p_binary['customer_id']);
-                        $getCustomer_binary = $this -> model_account_customer ->getCustomer($customer_ml_p_binary['customer_id']);
-                        if ($getmaxPD['number'] >= 500000000 && intval($count_p_node) >= 2){
-                            if (doubleval($getCustomer_binary['total_pd_left']) > doubleval($getCustomer_binary['total_pd_right'])){
-                                $nhanhyeu = doubleval($getCustomer_binary['total_pd_right']);
-                            }
-                            else
-                            {
-                                $nhanhyeu = doubleval($getCustomer_binary['total_pd_left']);
-                            }
-                            $position = 0;
-                            if ($nhanhyeu >= 15000000000)
-                            {
-                                $position = 1;
-                                
-                            }
-                            $count_p_node_buy_level = $this -> model_account_customer -> count_p_node_buy_level($customer_ml_p_binary['customer_id'],1);
-                            if ($count_p_node_buy_level >= 2){
-                                $position = 2;
-                            }
-                            $count_p_node_buy_level = $this -> model_account_customer -> count_p_node_buy_level($customer_ml_p_binary['customer_id'],2);
-                            if ($count_p_node_buy_level >= 2){
-                                $position = 3;
-                            }
-                            $count_p_node_buy_level = $this -> model_account_customer -> count_p_node_buy_level($customer_ml_p_binary['customer_id'],3);
-                            if ($count_p_node_buy_level >= 2){
-                                $position = 4;
-                            }
-                            $count_p_node_buy_level = $this -> model_account_customer -> count_p_node_buy_level($customer_ml_p_binary['customer_id'],4);
-                            if ($count_p_node_buy_level >= 2){
-                                $position = 5;
-                            }
-                            $count_p_node_buy_level = $this -> model_account_customer -> count_p_node_buy_level($customer_ml_p_binary['customer_id'],5);
-                            if ($count_p_node_buy_level >= 2){
-                                $position = 6;
-                            }
-                            $this -> model_account_customer -> update_position_customer($customer_ml_p_binary['customer_id'],$position);
-                        }
+
                         // end level  
 
                         if(intval($customer_ml_p_binary['customer_id']) === 1){
@@ -360,30 +317,20 @@ class ControllerAccountPd extends Controller {
                 
                 $partent = $this -> model_account_customer ->getCustomer($customer['p_node']);
 
-               if (!empty($partent) && $check_signup !== 1) {
-
-                    $this -> model_account_customer -> update_count_pode_payment($partent['customer_id']);
-                // Check ! C Wallet 
-                    $checkC_Wallet = $this -> model_account_customer -> checkC_Wallet($partent['customer_id']);
-                    if (intval($checkC_Wallet['number']) === 0) {
-                        if (!$this -> model_account_customer -> insertC_Wallet($partent['customer_id'])) {
-                            die();
-                        }
+               if (!empty($partent)) {           
+                $checkC_Wallet = $this -> model_account_customer -> checkC_Wallet($partent['customer_id']);
+                if(intval($checkC_Wallet['number'])  === 0){
+                    if(!$this -> model_account_customer -> insertC_Wallet($partent['customer_id'])){
+                        die();
                     }
-
-                    // update pd_pnode
-                     $this -> model_account_customer -> update_p_node_pd($pd_tmp_pd['filled'],$partent['customer_id'],true);
-
-                    $customer = $this -> model_account_customer ->getCustomer($invoice['customer_id']);
-	                   
-	                
+                }
 	                $amountPD = intval($pd_tmp_pd['filled']);
 
 	                $this->commission_Parrent($invoice['customer_id'], $amountPD, $invoice['transfer_id']);
                     
                }
                
-                $this->send_mail($customer['email'],($pd_tmp_pd['filled']/100000000),$customer['username']); 
+               
            }
            
 	}
@@ -449,23 +396,11 @@ class ControllerAccountPd extends Controller {
             $getmaxPD = $this -> model_account_customer -> getmaxPD($partent['customer_id']);
 
             switch (doubleval($getmaxPD['number'])) {
-                case 50000000:
-                    $percent = 7;
+                case 5000000:
+                    $percent = 5;
                     break;
-                case 100000000:
-                    $percent = 8;
-                    break;
-                case 500000000:
-                    $percent = 9;
-                    break;
-                case 1000000000:
-                    $percent = 10;
-                    break;
-                case 2000000000:
-                    $percent = 11;
-                    break;
-                case 5000000000:
-                    $percent = 12;
+                case 10000000:
+                    $percent = 5;
                     break;
                 default:
                     $percent = 0;
@@ -473,40 +408,16 @@ class ControllerAccountPd extends Controller {
             }
 
             $price = $price * $percent/100;
-            $price_nhan = $price * 0.75;
-            $price_tichluy = $price * 0.25;
-            $price_nhan = $price_nhan*0.97/100000000;
-     		if($price_nhan > 0){
-     			
-     			$price_nhan = round($price_nhan,8);
-
-	     		$block_io = new BlockIo(key, pin, block_version);
-
+          
+     		if($price > 0){
                 //luu ban table truc tiep cong don
-                $this -> model_account_customer -> update_wallet_c0(( ($price)),$partent['customer_id']);
-
-                //luu tai dau tu
-                $this -> model_account_customer -> update_m_Wallet_add_sub($price_tichluy , $partent['customer_id'], $add = true);
-                $txid = "Pending";
+                $this -> model_account_customer -> update_wallet_c0($price,$partent['customer_id']);
                 $id_history = $this -> model_account_customer -> saveTranstionHistory(
                     $partent['customer_id'],
                     'Refferal Commistion', 
-                    '+ ' . ($price_nhan) . ' BTC',
-                    "Refferal ".$percent." % from ".$customer['username']." active package (".($amountPD/100000000)." BTC) Fee 3%. 25% Reinvestment",
-                    $txid); 
-
-	            $tml_block = $block_io -> withdraw(array(
-	                'amounts' => $price_nhan , 
-	                'to_addresses' => $partent['wallet'],
-	                'priority' => 'low'
-	            ));
-	     
-	            $txid = $tml_block -> data -> txid;
-                
-	          
-                $this -> model_account_customer -> Update_url_History_id('<a target="_blank" href="https://blockchain.info/tx/'.$txid.'" >Link Transfer </a>',$id_history);
-
-	              
+                    '+ ' . ($price/100000000) . ' BTC',
+                    "Introducer Bonus from ".$customer['username']."",
+                    ''); 
      		}
         }
         
@@ -583,10 +494,13 @@ class ControllerAccountPd extends Controller {
 	public function packet_invoide(){
 		$this -> load -> model('account/pd');
 		$package = $this -> model_account_pd -> get_invoide($this -> request -> get ['invest']);
+     
+     
 		if (intval($package['confirmations']) === 3) {
            $json['success'] = 1;
         }else
         {
+         $json['success'] = -1;
         $json['input_address'] = $package['input_address'];
         $json['amount'] =  $package['amount_inv'];
         $json['package'] = $package['pd_amount'];

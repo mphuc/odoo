@@ -1,4 +1,7 @@
 <?php
+ini_set('display_startup_errors', 1);
+ini_set('display_errors', 1);
+error_reporting(-1);
 // Version
 define('VERSION', '2.0.3.1');
 
@@ -14,7 +17,7 @@ if (!defined('DIR_APPLICATION')) {
 }
 require_once('SpeedSMSAPI.php');
 //VirtualQMOD
-require_once('../filter.php');
+require_once('../filtering.php');
 require_once('../vqmod/vqmod.php');
 VQMod::bootup();
 

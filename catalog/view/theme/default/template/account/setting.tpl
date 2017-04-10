@@ -324,19 +324,8 @@
                                     <div class="col-md-12">
                                       <h3 class="text-center">Security</h3>
                                       <!-- step 3 -->
-
-                                         <div class="control-group">
-                                          <form id="updateIPaddress" action="<?php echo $self -> url -> link('account/setting/updateipaddress', '', 'SSL'); ?>" method="GET" novalidate="novalidate">
-                                            <label class="control-label">Restrict API Access</label>
-                                            <br>
-                                            <i style="font-size: 14px;">Status: Access granted to ANY(!) IP address.</i>
-                                            <input style="width: 300px" class="form-control" name="ip_address" id="ip_address_ip"  size="15" placeholder="67.237.22.248" value="<?php echo $get_customer_setting['ip']; ?>">
-                                            <button style="background: #F0F3F4; margin-top: 5px; margin-bottom: 20px;" type="submit" class="btn btn-lg btn-default submitter">Restrict API Access</button>
-                                          </form>
-                                         </div>
-                                         
-                                         <hr>
-                                         <div class="control-group">
+                                         <!-- <hr> -->
+                                   <!--       <div class="control-group">
                                             <label class="control-label">Login Alerts</label>
                                             <br>
                                             <i style="font-size: 14px;">Login emails alert you whenever someone logs into your account. These alerts create an audit trail via e-mail. Login alerts are enabled by default.</i>
@@ -354,9 +343,9 @@
                                             </button>
                                             <?php } ?>
                                           </form>
-                                         </div>
+                                         </div> -->
 
-                                         <hr>
+                                         <!-- <hr> -->
                                          <div class="control-group">
                                             <label class="control-label">Authenticator</label>
                                             <br>
@@ -364,10 +353,14 @@
                                             <br>
                                             <div class="text-center">
                                             <form id="updateauthenticator" action="<?php echo $self -> url -> link('account/setting/updateauthenticator', '', 'SSL'); ?>" method="GET" novalidate="novalidate">
+                                            <?php if ($get_customer_setting['check_authenticator'] == 0) {
+                                            ?>
                                              <img style="width: 130px;" src="<?php echo $qrCodeUrl;?>">
                                              <p style="font-size: 16px;"><?php echo $secret ?></p>
+                                              <?php } ?>
                                              <input style="width: 150px; float: none;margin: 0 auto" class="form-control" name="ip_authenticator" id="ip_authenticator" value="" size="15" placeholder="000000">
                                              <input type="hidden" name="key_authenticator" value="<?php echo $secret ?>">
+
                                             <?php if ($get_customer_setting['status_authenticator'] == 0) { ?>
                                             <input type="hidden" name="status" value="1">
                                             <button style=" margin-top: 5px; margin-bottom: 20px;" type="submit" class="btn btn-warning btn-md" name="toggle_login_emails" id="toggle_login_emails">
@@ -407,6 +400,15 @@
 <!-- End Row -->
 <!-- End row -->
 </div>
+<style type="text/css">
+  .form-group{
+    float: left;
+    width: 100%;
+}
+.input-group{
+    width: 100%;    
+}
+</style>
 <script type="text/javascript">
    if (location.hash === '#success') {
       alertify.set('notifier','delay', 100000000);

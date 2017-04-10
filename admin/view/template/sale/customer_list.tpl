@@ -7,7 +7,7 @@
       <?php if($getGroupId == 1){?>
       <!-- <a href="<?php echo $add; ?>" data-toggle="tooltip" title="<?php echo $button_add; ?>" class="btn btn-primary"><i class="fa fa-plus"></i></a> -->
      <?php }?>
-      <button type="button" data-toggle="tooltip" title="<?php echo $button_delete; ?>" class="btn btn-danger" onclick="confirm('<?php echo $text_confirm; ?>') ? $('#form-customer').submit() : false;"><i class="fa fa-trash-o"></i></button>
+      
       <!-- <button type="button" id="exportcustomer" data-toggle="tooltip" title="Export" class="btn btn-info" >Export Customer</i></button>
       <button type="button" id="exportgd" data-toggle="tooltip" title="Export" class="btn btn-info" >Export GD</i></button>
        <button type="button" id="exportpd" data-toggle="tooltip" title="Export" class="btn btn-primary" >Export PD</i></button> -->
@@ -210,7 +210,7 @@
                 	<input type="text" name="filter_phone" value="<?php echo $filter_phone; ?>" placeholder="Số điện thoại" id="input-phone" class="form-control" />
               	</div>
             </div> -->
-            <div class="col-sm-4">
+            <div class="col-sm-4" style="display: none;">
               <div class="form-group">
                   <label class="control-label" for="input-phone">Filter member begin off</label>
                   <select name="filter_status" class="form-control">

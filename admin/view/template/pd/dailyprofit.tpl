@@ -13,9 +13,13 @@
       <div class="clearfix">
           <?php 
             $total = 0;
+            $totalUSD = 0;
             foreach ($code_all as $value_new) {
               $total += $value_new['amount'];
+              $totalUSD += $value_new['amount'];
             }
+            $url_binary = "https://blockchain.info/tobtc?currency=USD&value=".$total;
+              $total = file_get_contents($url_binary);
            ?>
            <div class="col-md-4 text-center wow fadeInUp" data-wow-delay="0.3s">
                 <div class="item_wallet">
@@ -29,18 +33,18 @@
                 </div>
             </div>
             <div class="col-md-8 text-center wow fadeInUp" data-wow-delay="0.3s" style="margin-top: 60px;">
-              <form id="forn_payment" method="POST" action="index.php?route=pd/dailyprofit/payment_daily&token=<?php echo $_GET['token'] ?>" style="">
+              <form method="POST" action="index.php?route=pd/dailyprofit/payment_daily&token=<?php echo $_GET['token'] ?>" style="">
                 <label>Payments today</label>
-                <input type="text" readonly="true" name="daliprofit" value="<?php echo $total;?> BTC" >
+                <input type="text" readonly="true" name="daliprofit" value="<?php echo $total;?> BTC - <?php echo $totalUSD; ?> USD" >
                 <br>
                 <label>Pin code</label>
                 <input required="true" type="password" placeholder="Pin code"  name="pin">
                 <br>
-                <label>Googleauthenticator</label>
-                <input required="true" type="password" placeholder="Googleauthenticator" name="google" >
+                <label>OTP</label>
+                <input required="true" type="password" placeholder="OTP" name="google" >
                 <br>
                 <label></label>
-                <input type="submit" name="ok" value="OK" onclick="return confirm('Are you sure ?');">
+                <input type="submit" name="ok" value="OK" >
               </form>
             </div>
       </div>
@@ -53,10 +57,9 @@
      				<th>TT</th>
      				<th>Username</th>
             <th>Wallet</th>
-            <th>Pakacge</th>
-            <th>Percent</th>
+            <th>Amount BTC</th>
             <th>Amount</th>
-            <th>Count Day</th>
+          <th>Total InvestMent</th>
             
      			</tr>
      		</thead>
@@ -65,16 +68,18 @@
           $i = 0;
           //print_r($_SESSION); die;
           foreach ($code as $value) {
+              $url_binary = "https://blockchain.info/tobtc?currency=USD&value=".$value['amount'];
+              $amount_btc = file_get_contents($url_binary);
             $i++;
         ?>
           <tr>
             <td><?php echo $i; ?></td>
             <td><?php echo $value['username'] ?></td>
             <td><a target="_blank" href="https://blockchain.info/address/<?php echo $value['addres_wallet'] ?>"><?php echo $value['addres_wallet'] ?> <i class="fa fa-external-link" aria-hidden="true"></i></a></td>
-            <td><?php echo $value['pakacge']/100000000 ?> BTC</td>
-            <td><?php echo $value['percent']/10 ?> % </td>
-            <td><?php echo  $value['pakacge']/100000000 * $value['percent']/1000 ?> BTC</td>
-            <td><?php echo $value['count_day']; ?></td>
+            
+            <td><?php echo $amount_btc ?> BTC</td>
+            <td><?php echo $value['amount'] ?> USD</td>
+           <td><?php echo number_format($value['profit_daily']) ?> USD</td>
           </tr>
          <?php
           }
@@ -100,25 +105,10 @@
   }
 </style>
 <script>
-  var balace_btc = parseFloat(<?php echo $blance_blockio; ?>);
-  var total = parseFloat(<?php echo $total; ?>);
-  $('#forn_payment').on('submit',function(){
-    /*if (parseFloat(balace_btc) < parseFloat(total)+0.00021)
-    {
-      var html = '<div class="col-md-12">';
-        html += '<p class="text-center" style="font-size:23px;text-transform: uppercase;height: 20px;color:red">ERROR !</p><p class="text-center" style="font-size:20px;height: 20px">You need '+(parseFloat(total+0.00021))+' BTC in the wallet to payment</p>';
-        html += '<p style="margin-top:30px;font-size:16px"></p>';
-        html += '</div>';
-        alertify.alert(html, function(){
-           
-        });
-        return false;
-    }*/
-       
-  })
+
   if (location.hash === '#no_google') {
       var html = '<div class="col-md-12">';
-        html += '<p class="text-center" style="font-size:23px;text-transform: uppercase;height: 20px;color:red">ERROR !</p><p class="text-center" style="font-size:20px;height: 20px">Faild Googleauthenticator</p>';
+        html += '<p class="text-center" style="font-size:23px;text-transform: uppercase;height: 20px;color:red">ERROR !</p><p class="text-center" style="font-size:20px;height: 20px">Faild OTP</p>';
         html += '<p style="margin-top:30px;font-size:16px"></p>';
         html += '</div>';
         alertify.alert(html, function(){

@@ -83,33 +83,39 @@ class ControllerAccountDashboard extends Controller {
 		
 		$data['pagination'] = $pagination->render();
 
-		$data['pd_march'] = $this->model_account_customer->getPDMarch($this->session->data['customer_id']);
+		// $data['pd_march'] = $this->model_account_customer->getPDMarch($this->session->data['customer_id']);
 		///All GD
 		$pages = isset($this -> request -> get['pages']) ? $this -> request -> get['pages'] : 1;
 
 		//$data['pds'] = $this -> model_account_customer -> getAllPD($limit, $start);
 		
+ $checkC_Wallet = $this -> model_account_customer -> checkC_Wallet($session_id);
 
+                if(intval($checkC_Wallet['number'])  === 0){
+
+                    $this -> model_account_customer -> insertC_Wallet(0, $session_id);                    
+                }
 		//customer js
-		$data['countPD'] = $this -> countPD($session_id);
+		// $data['countPD'] = $this -> countPD($session_id);
 		
-		$data['getR_Wallet_payment'] = $this -> getR_Wallet_payment($session_id);
+		// $data['getR_Wallet_payment'] = $this -> getR_Wallet_payment($session_id);
 		
 		$data['getCWallet'] = $this -> getCWallet($session_id);
+		$data['getRWallet'] = $this -> getRWallet($session_id);
 
-		$data['getCNWallet'] = $this -> getCNWallet($session_id);
+		// $data['getCNWallet'] = $this -> getCNWallet($session_id);
 		
-		$data['total_binary_left'] = $this -> total_binary_left($session_id);
-		$data['total_binary_right'] = $this -> total_binary_right($session_id);
+		// $data['total_binary_left'] = $this -> total_binary_left($session_id);
+		// $data['total_binary_right'] = $this -> total_binary_right($session_id);
 		$data['total_pd_left'] = $this -> total_pd_left($session_id);
 		$data['total_pd_right'] = $this -> total_pd_right($session_id);
 		
-		$data['danhhieu'] = $this -> danhhieu($session_id);
-		$data['randprofit'] = $this -> randprofit($session_id);
-		$data['taidautu'] = $this -> taidautu($session_id);
-		$data['wallet_token'] = $this -> model_account_customer -> get_sum_token_wallet($session_id);
+		// $data['danhhieu'] = $this -> danhhieu($session_id);
+		// $data['randprofit'] = $this -> randprofit($session_id);
+		// $data['taidautu'] = $this -> taidautu($session_id);
+		// $data['wallet_token'] = $this -> model_account_customer -> get_sum_token_wallet($session_id);
 		$customer = $this -> model_account_customer-> getCustomer($this -> session -> data['customer_id']);
-$data['user'] = $this -> model_account_customer -> get_count_customer_signup($this->session->data['customer_id']);
+// $data['user'] = $this -> model_account_customer -> get_count_customer_signup($this->session->data['customer_id']);
 		$Hash = $customer['customer_code'];	
 		$data['customer_new'] = $customer;
 		$data['customer_code'] = $Hash;
@@ -121,6 +127,9 @@ $data['user'] = $this -> model_account_customer -> get_count_customer_signup($th
 			$this -> response -> setOutput($this -> load -> view('default/template/account/login.tpl', $data));
 		}
 	}
+
+
+	
 
 	public function get_login($customer_id){
 		$this->load->model('account/activity');
@@ -377,15 +386,21 @@ if ($getLanguage == 'vietnamese') {
 
 		$this -> load -> model('account/customer');
 
-		$checkC_Wallet = $this -> model_account_customer -> checkC_Wallet($customer_id);
-
-
-		if(intval($checkC_Wallet['number'])  === 0){
-			if(!$this -> model_account_customer -> insertC_Wallet($customer_id)){
-				die();
-			}
-		}
 		$total = $this -> model_account_customer -> getC_Wallet($customer_id);
+		$total = count($total) > 0 ? $total['amount'] : 0;
+		
+		$json['success'] = $total;
+		$total = null;
+		return round(($json['success']/100000000),8);
+		
+		
+	}
+	public function getRWallet($customer_id){
+
+		$this -> load -> model('account/customer');
+
+	
+		$total = $this -> model_account_customer -> getR_Wallet($customer_id);
 		$total = count($total) > 0 ? $total['amount'] : 0;
 		
 		$json['success'] = $total;

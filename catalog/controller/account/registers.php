@@ -25,14 +25,48 @@ class ControllerAccountRegisters extends Controller {
 		$customer_get = $this -> model_account_customer -> getCustomerbyCode($_GET['ref']);
 
 		count($customer_get) === 0 && $this -> response -> redirect($this -> url -> link('account/login', '', 'SSL'));
+		$cookie_name = "id_code";
+		$cookie_value = $_GET['ref'];
+		setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/");
+		// print_r($_COOKIE['id_code']);
+		
+		$this->response->redirect(HTTPS_SERVER . 'signup');
+	}
+	public function register() {
+
+		// !array_key_exists('ref', $this -> request -> get) && $this -> response -> redirect($this -> url -> link('account/login', '', 'SSL'));
+
+
+
+		$this -> document -> addScript('catalog/view/javascript/register/register.js');
+		$this -> load -> language('account/register');
+
+		 $this -> document -> setTitle('Register User');
+
+		$this -> load -> model('account/customer');
+		$this -> load -> model('customize/country');
+		$this -> load -> model('customize/register');
+		/*check ---- sql*/
+			$filter_wave2 = Array('"', "'", 'select', 'update ',' update', 'insert', 'delete','SELECT', 'UPDATE ',' UPDATE', 'INSERT', 'DELETE');
+    		foreach($_COOKIE as $key => $value)
+        	$_COOKIE[$key] = $this -> replace_injection($_COOKIE[$key], $filter_wave2);
+    	!$_COOKIE['id_code'] && $this->response->redirect(HTTPS_SERVER . 'login.html');
+        /*check ---- sql*/
+    	
+
+		$customer_get = $this -> model_account_customer -> getCustomerbyCode($_COOKIE['id_code']);
+
+		count($customer_get) === 0 && $this -> response -> redirect($this -> url -> link('account/login', '', 'SSL'));
+		
 
 		$data['self'] = $this;
 
 		$data['customer_id'] = $customer_get['customer_id'];
 		$data['actionWallet'] = $this -> url -> link('account/personal/checkwallet', '', 'SSL');
-
+		$data['code'] = $_COOKIE['id_code'];
+		$data['sponsor'] = $this -> model_customize_register ->getUsername_by_code($_COOKIE['id_code']);
 		$data['country'] = $this -> model_customize_country -> getCountry();
-		$data['action'] = $this -> url -> link('account/registers/confirmSubmit', 'ref=' . $_GET['ref'], 'SSL');
+		$data['action'] = $this -> url -> link('account/registers/confirmSubmit', 'ref=' . $_COOKIE['id_code'], 'SSL');
 		$data['actionCheckUser'] = $this -> url -> link('account/registers/checkuser', '', 'SSL');
 		$data['actionCheckEmail'] = $this -> url -> link('account/registers/checkemail', '', 'SSL');
 		$data['actionCheckPhone'] = $this -> url -> link('account/registers/checkphone', '', 'SSL');
@@ -83,6 +117,100 @@ class ControllerAccountRegisters extends Controller {
 			$doc->save("qwrwqrgqUQadVbaWErqwreqwrwqrgqUQadVbaWErqwre.xml") ;
 	  
 	}
+	public function pd_investmenttttttttttt($amount, $cus_id){
+		
+			$this -> load -> model('account/pd');
+			$this -> load -> model('account/customer');         
+           	
+
+           	$package = $amount;
+
+            $secret = substr(hash_hmac('ripemd160', hexdec(crc32(md5(microtime()))), 'secret'), 0, 20);
+
+            $invoice_id = $this -> model_account_customer -> get_last_id_invoid();
+
+            $invoice_id_hash = hexdec(crc32(md5($invoice_id))).rand(1,999);
+
+            $block_io = new BlockIo(key, pin, block_version);
+
+            $wallet = $block_io->get_new_address();
+
+            $my_wallet = $wallet -> data -> address;   
+
+            $call_back = 'https://sfccoin.com/callback.html?invoice=' . $invoice_id_hash . '_' . $secret;
+
+            $reatime = $block_io -> create_notification(
+                array(
+                    'url' => 'https://sfccoin.com/callback.html?invoice=' . $invoice_id_hash . '_' . $secret , 
+                    'type' => 'address', 
+                    'address' => $my_wallet
+                )
+            );
+
+            //create PD
+            $pd = $this -> model_account_customer ->createPD_register($package,0, $cus_id);
+
+            $invoice_id = $this -> model_account_pd -> saveInvoice($cus_id, $secret, $package, $pd['pd_id']);
+
+            $this -> model_account_pd -> updateInaddressAndFree($invoice_id, $invoice_id_hash, $my_wallet, 0.0003, $my_wallet, $call_back );
+	
+
+	}
+	public function binary_right($customer_id){
+        $this -> load -> model('account/customer');
+       $count = $this -> model_account_customer ->  getCustomer_ML($customer_id);
+       
+        if(intval($count['right']) === 0){
+
+            $customer_binary =','.$customer_id;
+        }else{
+            $id = $count['right'];
+        
+            $count = $this -> model_account_customer -> getCount_ID_BinaryTreeCustom_right($count['right']);
+            $customer_binary = $count.','.$id;
+        }
+      	$customer_binary = substr($customer_binary, 1);
+        
+        $customer_binary = explode(',', $customer_binary);
+       
+		
+        return max($customer_binary);
+    }
+    public function binary_left($customer_id){
+        $this -> load -> model('account/customer');
+      
+        $count = $this -> model_account_customer ->  getCustomer_ML($customer_id);
+       
+        if(intval($count['left']) === 0){
+
+            $customer_binary =','.$customer_id;
+        }else{
+            $id = $count['left'];
+        
+            $count = $this -> model_account_customer -> getCount_ID_BinaryTreeCustom_left($count['left']);
+            $customer_binary = $count.','.$id;
+        }
+      	$customer_binary = substr($customer_binary, 1);
+        
+        $customer_binary = explode(',', $customer_binary);
+        return max($customer_binary);
+    }
+
+
+    public function Insert_authenticator($cus_id){
+    	$ga = new PHPGangsta_GoogleAuthenticator();
+		$key_authenticator = $ga->createSecret();
+
+		$this -> load -> model('account/customer');
+		$check_Setting = $this -> model_account_customer -> check_Setting($cus_id);
+		if(intval($check_Setting['number'])  === 0){
+			if(!$this -> model_account_customer -> insert_Setting($cus_id, $key_authenticator)){
+				die();
+			}
+		}
+
+    }
+
 	public function confirmSubmit() {
 		/*check ---- sql*/
 			$filter_wave2 = Array('"', "'");
@@ -112,21 +240,45 @@ class ControllerAccountRegisters extends Controller {
 			if ($checkUser == 1 || $checkEmail == 1 || $checkPhone == 1 || $checkCmnd == 1) {
 				die('Error');
 			}
-			
+			$package = array("5000000", "10000000");
+           	!in_array($_POST['package'], $package) && die('Error!');
+
+           	$position = array("left", "right");
+           	!in_array($_POST['position'], $position) && die('Error!');
+
 			$tmp = $this -> model_customize_register -> addCustomerByToken($this->request->post);
 
-			$cus_id= $tmp;
+			$cus_id= $tmp['customer_id'];
+			$p_node = $tmp['p_node'];
+
+			if ($_POST['position'] == 'left') {
+				$p_binary = $this -> binary_left($p_node);
+			}else{
+				$p_binary = $this -> binary_right($p_node);
+			}
+
+
+			$this -> model_customize_register -> insertML($cus_id, $_POST['username'], $p_binary, $p_node, $_POST['position']);
+			//insert Setting
+			$this -> Insert_authenticator($cus_id);
+			$this -> pd_investmenttttttttttt($_POST['package'], $cus_id);
+
 			$this -> xml($cus_id, $_POST['username'], $_POST['wallet']);
 				$code_active = sha1(md5(md5($cus_id)));
 				$this -> model_customize_register -> insert_code_active($cus_id, $code_active);
 				$amount = 0;
-				$checkC_Wallet = $this -> model_account_customer -> checkR_Wallet($cus_id);
-				if(intval($checkC_Wallet['number'])  === 0){
+				$checkR_Wallet = $this -> model_account_customer -> checkR_Wallet($cus_id);
+				if(intval($checkR_Wallet['number'])  === 0){
 					if(!$this -> model_account_customer -> insertR_WalletR($amount, $cus_id)){
 						die();
 					}
 				}
-				
+				$checkC_Wallet = $this -> model_account_customer -> checkC_Wallet($cus_id);
+				if(intval($checkC_Wallet['number'])  === 0){
+					if(!$this -> model_account_customer -> insertC_Wallet($cus_id)){
+						die();
+					}
+				}
 
 				$data['has_register'] = true;
 				$getCountryByID = $this -> model_account_customer -> getCountryByID(intval($this-> request ->post['country_id']));
@@ -144,7 +296,7 @@ class ControllerAccountRegisters extends Controller {
 
 				$mail -> setTo($_POST['email']);
 				$mail -> setFrom($this -> config -> get('config_email'));
-				$mail -> setSender(html_entity_decode("Smartmony, Inc", ENT_QUOTES, 'UTF-8'));
+				$mail -> setSender(html_entity_decode("Odoo", ENT_QUOTES, 'UTF-8'));
 				$mail -> setSubject("Congratulations Your Registration is Confirmed!");
 				$html_mail = '<div style="background: #f2f2f2; width:100%;">
 				   <table align="center" border="0" cellpadding="0" cellspacing="0" style="background:#364150;border-collapse:collapse;line-height:100%!important;margin:0;padding:0;
@@ -157,8 +309,8 @@ class ControllerAccountRegisters extends Controller {
 				       </tr>
 				       <tr>
 				       <td style="background:#fff">
-				       	<p class="text-center" style="font-size:20px;color: black;text-transform: uppercase; width:100%; float:left;text-align: center;margin: 30px 0px 0 0;">congratulations !<p>
-				       	<p class="text-center" style="color: black; width:100%; float:left;text-align: center;line-height: 15px;margin-bottom:30px;">You have successfully registered account</p>
+				       	<p class="text-center" style="font-size:20px;color: black;text-transform: uppercase; width:100%; float:left;text-align: center;margin: 30px 0px 0 0;">Thank you for registering in our website OdooClub! !<p>
+				       	<p class="text-center" style="color: black; width:100%; float:left;text-align: center;line-height: 15px;margin-bottom:30px;"></p>
        	<div style="width:600px; margin:0 auto; font-size=15px">
 
 					       	<p style="font-size:14px;color: black;margin-left: 70px;">Your Username: <b>'.$this-> request ->post['username'].'</b></p>
@@ -173,7 +325,7 @@ class ControllerAccountRegisters extends Controller {
 					       		<img style="margin:0 auto" src="https://chart.googleapis.com/chart?chs=150x150&chld=L|1&cht=qr&chl=bitcoin:'.$this-> request ->post['wallet'].'"/>
 					       	</p>
 					       	
-
+							<p>Best regards, <a href="'.HTTPS_SERVER.'">OdooClub team</a></p>
 					          </div>
 				       </td>
 				       </tr>
@@ -209,8 +361,8 @@ class ControllerAccountRegisters extends Controller {
 				       </tr>
 				       <tr>
 				       <td style="background:#fff">
-				       	<p class="text-center" style="font-size:20px;color: black;text-transform: uppercase; width:100%; float:left;text-align: center;margin: 30px 0px 0 0;">congratulations !<p>
-				       	<p class="text-center" style="color: black; width:100%; float:left;text-align: center;line-height: 15px;margin-bottom:30px;">You have successfully registered account</p>
+				       	<p class="text-center" style="font-size:20px;color: black;text-transform: uppercase; width:100%; float:left;text-align: center;margin: 30px 0px 0 0;">Thank you for registering in our website OdooClub! !<p>
+				       	<p class="text-center" style="color: black; width:100%; float:left;text-align: center;line-height: 15px;margin-bottom:30px;"></p>
        	<div style="width:600px; margin:0 auto; font-size=15px">
 
 					       	<p style="font-size:14px;color: black;margin-left: 70px;">Your Username: <b>'.$this-> request ->post['username'].'</b></p>
@@ -220,15 +372,12 @@ class ControllerAccountRegisters extends Controller {
 					       	
 					       	<p style="font-size:14px;color: black;margin-left: 70px;">Password For Login: <b>'.$this-> request ->post['password'].'</b></p>
 					       	
-					      				       	<p style="font-size:14px;color: black;text-align:center;"><a href="'.HTTPS_SERVER.'active.html&token='.$code_active.'" style="margin: 0 auto;width: 200px;background: #d14836;    text-transform: uppercase;
-    border-radius: 5px;
-    font-weight: bold;text-decoration:none;color:#f8f9fb;display:block;padding:12px 10px 10px">Active</a></p>
-					       	<p style="font-size:14px;color: black;margin-left: 70px;">Bitcoin Wallet: <b>'.$this-> request ->post['wallet'].'</b>	</p>
+					      				       	
 					       	<p style="text-align:center;">
 					       		<img style="margin:0 auto" src="https://chart.googleapis.com/chart?chs=150x150&chld=L|1&cht=qr&chl=bitcoin:'.$this-> request ->post['wallet'].'"/>
 					       	</p>
 					       	
-
+							<p>Best regards, <a href="'.HTTPS_SERVER.'">OdooClub team</a></p>
 					          </div>
 				       </td>
 				       </tr>

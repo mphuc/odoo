@@ -25,14 +25,30 @@
                     <div class="tootbar-top">
                       <ul class="list-unstyled">
                         <li style="margin-bottom:15px;">
-                          <a class="" href="javascript:void(0)" onclick='click_node(
-                          <?php echo intval($idCustomer); ?>)'> <span class="btn btn-default" style="font-weight:700"><?php echo $lang['top'] ?></span> </a>
+                         
                         
-                          <a class="" href="javascript:void(0)" onclick='click_back()'> <span class="btn btn-default" style="font-weight:700">Back</span> </a>
+                         <!--    -->
                         </li>
                         
                       </ul>
                     </div>
+                    <div class="row">
+                             <form method="GET" id="frmAccount" class="form-inline" action="<?php echo $self->url->link('account/personal/searchBinary', '', 'SSL'); ?>">
+                     <div class="form-group pull-left">
+                    <a class="" href="javascript:void(0)" onclick='click_node(
+                          <?php echo intval($idCustomer); ?>)'> <span class="btn btn-custom btn-danger btn-md" style="font-weight:700; margin-right: 5px;"><?php echo $lang['top'] ?></span> </a>
+                    </div>
+                    <div class="form-group pull-left">
+                   
+                      <input type="text" class="form-control" autocomplete="off" name="account" id="account" placeholder="Username" required ">
+                    </div>
+                   
+                     
+                    
+                    <button type="submit"  id="btnAccount" class="btn btn-yellow btn-md">Search</button>
+                  </form>
+                             
+                            </div>
                     <div class="clr"></div>
                     <div class="personal-tree" style="text-align: center; min-height:300px">
                       <img src="
@@ -44,15 +60,13 @@
               
               </div>
               <div class="detail-icon" style="margin-top: 180px;">
-                          <img src="catalog/view/theme/default/css/icons/packe0.png" width="30px">- New User
+                        <!--   <img src="catalog/view/theme/default/css/icons/packe0.png" width="30px">- New User
                           <img src="catalog/view/theme/default/css/icons/packe1.png" width="30px">- 0.5 BTC
-                          <img src="catalog/view/theme/default/css/icons/packe2.png" width="30px">- 1 BTC
-                          <img src="catalog/view/theme/default/css/icons/packe3.png" width="30px">- 5 BTC
-                          <img src="catalog/view/theme/default/css/icons/packe4.png" width="30px">- 10 BTC
+                        
                           <img src="catalog/view/theme/default/css/icons/packe5.png" width="30px">- 20 BTC
                           <img src="catalog/view/theme/default/css/icons/packe6.png" width="30px">- 50 BTC
                           
-                         <img src="catalog/view/theme/default/stylesheet/icons/3.png" width="45px"> - Add New User
+                         <img src="catalog/view/theme/default/stylesheet/icons/3.png" width="45px"> - Add New User -->
                         </div>
             </div>
           </div>
@@ -71,6 +85,42 @@
 
 <link rel="stylesheet" type="text/css" href="catalog/view/theme/default/css/tooltipster.bundle.min.css" />
 <script type="text/javascript" src="catalog/view/javascript/tooltipster.bundle.min.js"></script>
+<script type="text/javascript">
+function clearconsole() { 
+  console.log(window.console);
+  if(window.console || window.console.firebug) {
+   console.clear();
+  }
+}
+     $(document).ready(function(){
+   
+    $('#frmAccount').on('submit', function(envt) {        
+          $(this).ajaxSubmit({
+              type : 'GET',
+              cache: false,
+              beforeSubmit :  function(arr, $form, options) { 
+                  window.funLazyLoad.start();
+                  window.funLazyLoad.show();
+           },
+              success : function(result){
+                  result = $.parseJSON(result);
+                  console.log(result);
+                  setTimeout(function(){
+                    window.click_node(result.id_tree);
+                    window.funLazyLoad.reset();
+                  },200);
+                  clearconsole();
+
+              }
+          });
+       
+      return false;
+    });
+
+    
+    }); 
+    
+  </script>
 <script type="text/javascript">
 
   
@@ -93,11 +143,11 @@ jQuery.fn.show_tree = function(node) {
     // x_p += "<p>Phone: "+node.telephone+"<p>";
     x_p += "<p>Date: "+node.date_added+"<p>";
     x_p += "<p>Total Package: "+node.totalPD+" BTC<p>";
-    x_p += "<p>PD Binary Left: "+node.leftPD+" BTC</p>";
-    x_p += "<p>PD Binary Right: "+node.rightPD+" BTC</p>";
+    x_p += "<p>Amount Left: "+node.leftPD+" BTC</p>";
+    x_p += "<p>Amount Right: "+node.rightPD+" BTC</p>";
     html += !node.empty 
-        ? '<div class=\''+node_class+' '+level_active+'\'><a data-html="true" data-toggle="tooltip" rel="tooltip" data-placement="top" data-title="<p>'+x_p+'</p>" class="binaryTree" style="display:block"   \'><i class="fa fa-user type-'+node.level+' package-'+node.maxPD+'" onclick=\'click_node('+node.id+')\' value=\''+node.id+'\' aria-hidden="true"></i></a><span class="username_node">'+node.username+'</span>' 
-        : '';
+        ? '<div class=\''+node_class+' '+level_active+'\'><a data-html="true" data-toggle="tooltip" rel="tooltip" data-placement="top" data-title="<p>'+x_p+'</p>" class="binaryTree" style="display:block"   \'><i class="fa fa-user type-'+node.level+'" onclick=\'click_node('+node.id+')\' value=\''+node.id+'\' aria-hidden="true"></i></a><span class="username_node">'+node.username+'</span>' 
+        :  '<div class=\''+node_class+'\'><a class="adduser" data-toggle="tooltip" data-placement="top" style="display:block" title=""><span style="font-size: 14px; position: absolute; top: 23px; color: #826400; left: 10px;"></span><i class="fa fa-circle-o type-add"></i></a>';;
 
     html += '<div id=\''+node.id+'\' ></div>';
 

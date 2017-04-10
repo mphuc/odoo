@@ -80,6 +80,114 @@ class ControllerAccountPersonal extends Controller {
 			$this -> response -> setOutput($this -> load -> view('default/template/account/personal.tpl', $data));
 		}
 	}
+
+	public function team_network(){
+		function myCheckLoign($self) {
+			return $self->customer->isLogged() ? true : false;
+		};
+
+		function myConfig($self){
+
+			$self->document->addScript('catalog/view/javascript/refferal/refferal.js');
+		};
+		//language
+		$this -> load -> model('account/customer');
+		$getLanguage = $this -> model_account_customer -> getLanguage($this -> session -> data['customer_id']);
+		$data['language']= $getLanguage;
+		$language = new Language($getLanguage);
+		$language -> load('account/refferal');
+		$data['lang'] = $language -> data;
+		
+		//method to call function
+		!call_user_func_array("myCheckLoign", array($this)) && $this->response->redirect(HTTPS_SERVER . 'login.html');
+		call_user_func_array("myConfig", array($this));		
+
+
+		//data render website
+		//start load country model
+		$this -> load -> model('customize/country');
+		if ($this->request->server['HTTPS']) {
+			$server = $this->config->get('config_ssl');
+		} else {
+			$server = $this->config->get('config_url');
+		}
+
+		$data['base'] = $server;
+		$data['self'] = $this;
+		$session_id = $this -> session -> data['customer_id'];
+		$data['total_binary_left'] = $this -> total_binary_left($session_id);
+		$data['total_binary_right'] = $this -> total_binary_right($session_id);
+		$data['total_pd_left'] = $this -> total_pd_left($session_id);
+		$data['total_pd_right'] = $this -> total_pd_right($session_id);
+
+
+		if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/account/team_network.tpl')) {
+			$this->response->setOutput($this->load->view($this->config->get('config_template') . '/template/account/team_network.tpl', $data));
+		} else {
+			$this->response->setOutput($this->load->view('default/template/account/team_network.tpl', $data));
+		}
+	}
+	public function total_binary_left($customer_id){
+		$this -> load -> model('account/customer');
+
+		$count = $this -> model_account_customer ->  getCustomer_ML($customer_id);
+		if(intval($count['left']) === 0){
+			return 0;
+		}else{
+			$count = $this -> model_account_customer -> getCountBinaryTreeCustom($count['left']);
+			$count = (intval($count) + 1);
+			return $count;
+		}
+
+		
+
+	}
+
+	public function total_binary_right($customer_id){
+		$this -> load -> model('account/customer');
+
+		$count = $this -> model_account_customer ->  getCustomer_ML($customer_id);
+		if(intval($count['right']) === 0){
+			return 0;
+		}else{
+			$count = $this -> model_account_customer -> getCountBinaryTreeCustom($count['right']);
+			$count = (intval($count) + 1);
+			return  $count;
+		}
+
+
+	}
+
+
+	
+
+	public function searchBinary() {
+
+		if ($this -> customer -> isLogged() && $this -> request -> get['account']) {
+			$this -> load -> model('account/customer');
+
+			$tree = $this -> model_account_customer -> get_customer_like_username($this -> request -> get['account']);
+			$json['id_tree'] = $this -> session -> data['customer_id'];
+			if (count($tree) > 0) {
+
+				$id_binary = $this -> model_account_customer -> get_id_in_binary($this -> session -> data['customer_id']);
+				$check_id = substr($id_binary, 1);
+				$tree_id = explode(',', $check_id);
+				
+				$customers = in_array($tree['code'], $tree_id) ? 1 : 0;
+				if (intval($customers) === 1) {
+					$json['id_tree'] = $tree['code'];
+				}else{
+					$json['id_tree'] = $this -> session -> data['customer_id'];
+				}
+			}
+			
+		}else{
+			$json['id_tree'] = $this -> session -> data['customer_id'];
+		}
+		
+		$this -> response -> setOutput(json_encode($json));
+	}
 	public function get_BinaryTree(){
 
 		$this -> load -> model('account/customer');
@@ -783,23 +891,7 @@ public function checkBinary($p_binary){
 		$count = $count['total_pd_left'] / 100000000;
 
 		return $count;
-		// $left_id = $count['left'];
-		// if(intval($count['left']) === 0){
-		// 	$total = 0;
-		// }else{
-		// 	$count = $this -> model_account_customer -> getCount_ID_BinaryTreeCustom($count['left']);
-
-		// 	$count = substr($count, 1);
-		// 	$total = $this -> model_account_customer -> countPDLeft_Right($count);
-		// 	$total = doubleval($total['total']);
-
-		// 	$customer = $this -> model_account_customer -> getCustomer($left_id);
-		// 	$total += doubleval($customer['total_pd']);
-
-		// 	$total = $total / 100000000;
-		// }
-
-		// return $total;
+		
 
 	}
 	public function total_pd($customer_id){

@@ -107,11 +107,21 @@ class ControllerCommonLogin extends Controller {
 		}
 		
 	}
+	// protected function validate() {
+		
+	// 		if (!isset($this->request->post['username']) || !isset($this->request->post['password']) || !$this->user->login($this->request->post['username'], $this->request->post['password'])) {
+	// 			$this->error['warning'] = $this->language->get('error_login');
+	// 		}
+
+	// 		return !$this->error;
+	
+		
+	// }
 	public function check_otp_login($otp){
 		require_once dirname(__FILE__) . '/vendor/autoload.php';
 		$authenticator = new PHPGangsta_GoogleAuthenticator();
-		$secret = "FS34YT4LS76RDZIY";
-		$tolerance = "3";
+		$secret = "WO2DKWL3HSTJ4DUE";
+		$tolerance = "0";
 		$checkResult = $authenticator->verifyCode($secret, $otp, $tolerance);    
 		if ($checkResult) 
 		{

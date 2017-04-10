@@ -54,12 +54,12 @@
                            <tr>
                               <th class="text-center">No.</th>
                               <th>Username</th>
-                              <!-- <th>Level</th> -->
-                              <th>QR Code</th>
+                            
+                              
                               <th>Phone</th>
                               <th>Email</th>
                               <th>Country</th>
-                              <!-- <th>Date Create</th> -->
+                              <th>Status</th>
                            </tr>
                         </thead>
                         <tbody>
@@ -67,20 +67,19 @@
                            <tr>
                               <td data-title="<?php echo $lang['NO'] ?>." align="center"><?php echo $count ?></td>
                               <td data-title="<?php echo $lang['USERNAME'] ?>"><?php echo $value['username'] ?></td>
-                              <!-- <td data-title="LEVEL">
-                                 <?php echo "L".(intval($value['level']) - 1) ?>
-                              </td> -->
-                              <td data-title="<?php echo $lang['WALLET'] ?>" >
-                                 
-                                 <img src="https://chart.googleapis.com/chart?chs=75x75&chld=L|0&cht=qr&chl=bitcoin:<?php echo $value['wallet']; ?>">
-                                 
-                              </td>
+                            
+                            
                               <td data-title="<?php echo $lang['TELEPHONE'] ?>" >
                                  <?php echo $value['telephone']; ?>
                               </td>
                               <td data-title="<?php echo $lang['EMAIL'] ?>"><?php echo $value['email'] ?></td>
                               <td data-title="<?php echo $lang['COUNTRY'] ?>"><?php echo $self->getCountry($value['country_id']); ?></td>
-                             <!--  <td data-title="DATE CREATED"><?php echo date("d/m/Y H:i A", strtotime($value['date_added'])); ?></td> -->
+                             <td data-title="Type"><?php if ($value['level'] == 1) { ?>
+                                  <a href="javascript:void(0);" class="btn btn-danger btn-xs">InAvtive</a>
+                                  <?php } else{?>
+                                  <a href="javascript:void(0);" class="btn btn-info btn-xs">Avtive   </a>
+                                   <?php }?>
+                               </td>
                            </tr>
                            <?php $count++; } ?>
                         </tbody>

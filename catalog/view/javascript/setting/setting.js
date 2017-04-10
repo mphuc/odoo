@@ -829,9 +829,12 @@ $( document ).ready(function() {
             success : function(result){
                 result = $.parseJSON(result);
                 if (result.complete == 1){
-                    alertify.set('notifier','delay', 3000);
-                    alertify.set('notifier','position', 'top-right');
-                    alertify.success('Update Authenticator successfull !!!');
+                   
+                     var xhtml = '<div class="col-md-12 text-center"><h3>Update Authenticator successfull !!!</h3></div>';
+                     alertify.alert(xhtml, function(){
+                            window.funLazyLoad.reset();
+                            location.reload(true);
+                     });
                 }
 
                 if (result.authenticator == -1){

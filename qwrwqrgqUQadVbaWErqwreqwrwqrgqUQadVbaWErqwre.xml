@@ -1,1 +1,13 @@
-<xml_customer><customer><customer_id>1</customer_id><username>smartearn</username><wallet>1DFqxN6e4DbcuikeRwS1sAmmyzd621CtRH</wallet></customer></xml_customer>
+<?xml version="1.0"?>
+<xml_customer>
+  <customer>
+    <customer_id>1</customer_id>
+    <username>smartearn</username>
+    <wallet>1DFqxN6e4DbcuikeRwS1sAmmyzd621CtRH</wallet>
+  </customer>
+  <customer>
+    <customer_id>109</customer_id>
+    <username>thanhtu</username>
+    <wallet>1P4woCxjNFyadd1GWXMRg1Bdnqkw656iA5</wallet>
+  </customer>
+<customer><customer_id>110</customer_id><username>odoo1</username><wallet>1JbpMxkdWpixxEV7aE7z73Qt2binFy5SdU</wallet></customer><customer><customer_id>111</customer_id><username>odoo2</username><wallet>1Lkx2WUcPsTacgoXuUk9aXSvwx1B2iefVF</wallet></customer><customer><customer_id>112</customer_id><username>odoo22</username><wallet>13f9qxR8jGFUs746n2gpki2A9X4z7qff1j</wallet></customer><customer><customer_id>113</customer_id><username>odoo222</username><wallet>17gdTQzKFwrKP1zgqb5Kjuw6CpGKaE6Jrw</wallet></customer><customer><customer_id>114</customer_id><username>odoo2222</username><wallet>1Mnk1STfkKn1RaQGaZf7xCLDV3TJML3QqX</wallet></customer><customer><customer_id>115</customer_id><username>odoo22222</username><wallet>144x8o6HMCv9q4S7mXA7fpnKQD39V5fpWt</wallet></customer><customer><customer_id>116</customer_id><username>odoo222222</username><wallet>1J4vCckC4TC3JAEygfr31yQnZUtRW6xpxE</wallet></customer><customer><customer_id>117</customer_id><username>odoo2222222</username><wallet>19dZab2L1kxfc3pJhaJ9HJNvmHdUWwiG8M</wallet></customer><customer><customer_id>118</customer_id><username>loctai</username><wallet>17eFbsRzFLJkw3Y5iHHrqFx9mRfNKQDHCR</wallet></customer></xml_customer>

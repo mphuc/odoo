@@ -30,10 +30,15 @@ class ControllerModuleAccountleft extends Controller {
 		//loding link by phucnguyen
 
 		$data['self'] = $this;
-		$this->load->model('account/customer');
-		$data['customer'] = $customer = $this -> model_account_customer -> getCustomer($this -> session -> data['customer_id']);		
-		$data['username'] = $customer['username'];
-		
+	
+		if (isset($this -> session -> data['customer_id'])) {
+			$this->load->model('account/customer');
+			$data['customer'] = $customer = $this -> model_account_customer -> getCustomer($this -> session -> data['customer_id']);		
+				$data['username'] = $customer['username'];
+			
+			$data['pd_march'] = $this->model_account_customer->getPDMarch($this->session->data['customer_id']);
+
+		}
 		if ($this->request->server['HTTPS']) {
 			$server = $this->config->get('config_ssl');
 		} else {

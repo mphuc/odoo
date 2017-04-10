@@ -627,8 +627,11 @@
 .personal-tree .type-2,
 .personal-tree .type-add {
     color: transparent!important;
-    top: -28px;
+    top: 0px;
     position: relative
+}
+a.adduser {
+    border: 1px solid #f1d8ea !important;
 }
 .personal-tree .type-2 {
     background: url(icons/6.png) center center no-repeat;
@@ -884,9 +887,7 @@ span.btn.btn-default.btn-tree {
 .md-circle:before{
     display: none;
 }
-.input-group{
-    width: 100%;    
-}
+
 .card-action form{
     margin-top: 15px;
     float: left;
@@ -1061,10 +1062,7 @@ p.error{
 .page_setting label{
     font-size: 15px;
 }
-.form-group{
-    float: left;
-    width: 100%;
-}
+
 form button{
     min-width: 0px;
     margin-right: 7px;
@@ -1080,11 +1078,41 @@ form button{
 /*tree*/
 .undefined_node a{
     text-align: center;
-    border: 2px solid #ccc;
+    border: 1px solid #cab4c4;
     background: #fff;
     position: relative;
     padding: 10px;
     border-radius: 5px;
     display: block;
     width: 100px;
+}
+
+.subdrop ul {
+    display: block !important;
+}
+#no-more-tables{
+    border: 0px;
+}
+@media only screen and (max-width: 990px)
+{
+    #no-more-tables tr {
+    margin-bottom: 15px;
+    border: 1px solid #f1e3ed;
+        border-top: 0px;
+}
+}
+ul#suggesstion-box {
+   margin-bottom: 0px;
+}
+ul#suggesstion-box {
+    position: absolute;
+    width: 100%;
+}
+.Team img {
+    width: 30px;
+}
+.btn-custom.btn-pink:hover {
+    color: #fff !important;
+    border-width: 1px;
+    background: #fb6d9d !important;
 }

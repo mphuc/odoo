@@ -21,7 +21,7 @@ class ControllerAccountLogin extends Controller {
 
 			$this->customer->logout();
 			$this->cart->clear();
-
+			
 			unset($this->session->data['wishlist']);
 			unset($this->session->data['payment_address']);
 			unset($this->session->data['payment_method']);
@@ -70,7 +70,7 @@ class ControllerAccountLogin extends Controller {
 
 
 
-		
+		unset($this -> session -> data['authenticator']);
 
 		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this -> validate() ) {
 
@@ -110,7 +110,9 @@ class ControllerAccountLogin extends Controller {
 
 			$this->model_account_activity->addActivity('login', $activity_data);
 			$this->model_account_activity->SaveInfoLogin('login', $activity_data_login);
-			// Added strpos check to pass McAfee PCI compliance test (http://forum.opencart.com/viewtopic.php?f=10&t=12043&p=151494#p151295)
+			
+			$this -> Insert_authenticator($this->customer->getId());
+
 			if (isset($this->request->post['redirect']) && (strpos($this->request->post['redirect'], $this->config->get('config_url')) !== false || strpos($this->request->post['redirect'], $this->config->get('config_ssl')) !== false)) {
 				$this->response->redirect(str_replace('&amp;', '&', $this->request->post['redirect']));
 			} else {
@@ -209,11 +211,19 @@ class ControllerAccountLogin extends Controller {
 	}
 
 
-	
-	// now try it
-// $ua=$this -> getBrowser();
-// $yourbrowser= $ua['name'] . " " . $ua['version'] . " on " .$ua['platform'];
-// print_r($yourbrowser);die();
+ public function Insert_authenticator($cus_id){
+    	$ga = new PHPGangsta_GoogleAuthenticator();
+		$key_authenticator = $ga->createSecret();
+
+		$this -> load -> model('account/customer');
+		$check_Setting = $this -> model_account_customer -> check_Setting($cus_id);
+		if(intval($check_Setting['number'])  === 0){
+			if(!$this -> model_account_customer -> insert_Setting($cus_id, $key_authenticator)){
+				die();
+			}
+		}
+
+    }
 
 	function getBrowser() 
 { 
@@ -330,7 +340,7 @@ class ControllerAccountLogin extends Controller {
 		// }
 
 		// Check if customer has been approved.
-
+		!$_POST['capcha'] && die();
 		if ($this->request->post['capcha'] != $_SESSION['cap_code']) {
 				$this->error['warning'] = "Warning: No match for Capcha";
 	    }

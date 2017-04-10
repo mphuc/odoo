@@ -712,6 +712,7 @@ class ControllerSaleCustomer extends Controller {
 
 		if (isset($this->request->get['filter_username'])) {
 			$filter_username = $this->request->get['filter_username'];
+			
 		} else {
 			$filter_username = null;
 		}
@@ -890,7 +891,7 @@ class ControllerSaleCustomer extends Controller {
 		);
 
 		$customer_total = $this->model_sale_customer->getTotalCustomers($filter_data);
-
+		
 		$results = $this->model_sale_customer->getCustomers($filter_data);
 		//$all_hoivien_phi = 0;
 		//$all_congtac_phi = 0;
@@ -1479,13 +1480,6 @@ class ControllerSaleCustomer extends Controller {
 			$data['filled'] = '';
 		}
 
-		if (isset($this->request->post['status_r_wallet'])) {
-			$data['status_r_wallet'] = $this->request->post['status_r_wallet'];
-		} elseif (!empty($customer_info)) {
-			$data['status_r_wallet'] = $customer_info['status_r_wallet'];
-		} else {
-			$data['status_r_wallet'] = '';
-		}
 
 		if (isset($this->request->post['firstname'])) {
 			$data['firstname'] = $this->request->post['firstname'];
@@ -4142,5 +4136,5 @@ public function searchPackage() {
 	}
 
 
-	
+
 }

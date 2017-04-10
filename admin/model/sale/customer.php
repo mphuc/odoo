@@ -264,35 +264,7 @@ class ModelSaleCustomer extends Model {
 		if (!empty($data['filter_status'])) {
 			$implode[] = "c.status = " . $this->db->escape($data['filter_status']);
 		}
-		if (!empty($data['filter_status_pd'])) {
-			switch ($data['filter_status_pd']) {
-				case 1:
-					$data['filter_status_pd'] = 0;
-					break;
-				case 2:
-					$data['filter_status_pd'] = 1;
-					break;
-				default:
-					$data['filter_status_pd'] = 2;
-					break;
-			}
-			$implode[] = "pd.status = " . $this->db->escape($data['filter_status_pd']) ;
-		}
-		// echo "<pre>"; print_r($data); echo "</pre>"; die();
-		if (!empty($data['filter_status_gd'])) {
-			switch ($data['filter_status_gd']) {
-				case 1:
-					$data['filter_status_gd'] = 0;
-					break;
-				case 2:
-					$data['filter_status_gd'] = 1;
-					break;
-				default:
-					$data['filter_status_gd'] = 2;
-					break;
-			}
-			$implode[] = "gd.status = " . $this->db->escape($data['filter_status_gd']);
-		}
+		
 		if (!empty($data['filter_username'])) {
 			$implode[] = " c.username LIKE '%" . $this->db->escape($data['filter_username']) . "%'";
 		}
@@ -472,6 +444,7 @@ class ModelSaleCustomer extends Model {
 	}
 
 	public function getTotalCustomers($data = array()) {
+
 		$sql = "SELECT COUNT(*) AS total FROM " . DB_PREFIX . "customer c
 		 LEFT JOIN " . DB_PREFIX . "customer_provide_donation pd ON (c.customer_id= pd.customer_id)
 		 LEFT JOIN " . DB_PREFIX . "customer_get_donation gd ON (c.customer_id= gd.customer_id)
@@ -487,63 +460,11 @@ class ModelSaleCustomer extends Model {
 			$implode[] = "email LIKE '" . $this->db->escape($data['filter_email']) . "%'";
 		}
 
-		if (!empty($data['filter_username'])) {
-			$implode[] = " username LIKE '%" . $this->db->escape($data['filter_username']) . "%'";
-		}
-
-		if (!empty($data['filter_customer_code'])) {
-			$implode[] = "customer_code LIKE '%" . $this->db->escape($data['filter_customer_code']) . "%'";
-		}
-
-
-		if (!empty($data['filter_phone'])) {
-			$implode[] = "telephone LIKE '" . $this->db->escape($data['filter_phone']) . "%'";
-		}
-
-		if (isset($data['filter_newsletter']) && !is_null($data['filter_newsletter'])) {
-			$implode[] = "newsletter = '" . (int)$data['filter_newsletter'] . "'";
-		}
-
-		if (!empty($data['filter_customer_group_id'])) {
-			$implode[] = "customer_group_id = '" . (int)$data['filter_customer_group_id'] . "'";
-		}
-
-		if (!empty($data['filter_ip'])) {
-			$implode[] = "customer_id IN (SELECT customer_id FROM " . DB_PREFIX . "customer_ip WHERE ip = '" . $this->db->escape($data['filter_ip']) . "')";
-		}
-
 
 		if (!empty($data['filter_status'])) {
 			$implode[] = "c.status = " . $this->db->escape($data['filter_status']);
 		}
-		if (!empty($data['filter_status_pd'])) {
-			switch ($data['filter_status_pd']) {
-				case 1:
-					$data['filter_status_pd'] = 0;
-					break;
-				case 2:
-					$data['filter_status_pd'] = 1;
-					break;
-				default:
-					$data['filter_status_pd'] = 2;
-					break;
-			}
-			$implode[] = "pd.status = " . $this->db->escape($data['filter_status_pd']) ;
-		}
-		if (!empty($data['filter_status_gd'])) {
-			switch ($data['filter_status_gd']) {
-				case 1:
-					$data['filter_status_gd'] = 0;
-					break;
-				case 2:
-					$data['filter_status_gd'] = 1;
-					break;
-				default:
-					$data['filter_status_gd'] = 2;
-					break;
-			}
-			$implode[] = "gd.status = " . $this->db->escape($data['filter_status_gd']);
-		}
+				
 
 		if (isset($data['filter_approved']) && !is_null($data['filter_approved'])) {
 			$implode[] = "approved = '" . (int)$data['filter_approved'] . "'";
@@ -557,6 +478,7 @@ class ModelSaleCustomer extends Model {
 			$sql .= " WHERE " . implode(" AND ", $implode);
 		}
 		//$sql .= " GROUP BY c.customer_id ";
+	
 		$query = $this->db->query($sql);
 
 		return $query->row['total'];

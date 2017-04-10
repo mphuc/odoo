@@ -38,6 +38,14 @@ h1, h2, h3, h4, h5, h6, p {
 	padding: 0px;
 	margin: 0px;	
 }
+.ajs-header img{
+    width: 300px !important;
+}
+.ajs-header {
+    text-align: center;
+    background-color: #f1ffeb !important;
+    padding: 0px !important;
+}
 .breadcrumb li:last-child a {
 	color: #1e91cf;
 }

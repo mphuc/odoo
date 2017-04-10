@@ -472,7 +472,7 @@ $(document).delegate('.agree', 'click', function(e) {
 })(window.jQuery);
 
 $(function(){
-	$('title').text($('title').text() + ' | Smart financial connections');
+	$('title').text($('title').text() + ' | Odoo Club');
 	$('.goog-te-gadget img').hide();
 });
 

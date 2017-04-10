@@ -23,10 +23,10 @@ class ControllerAccountLogout extends Controller {
 
 			$this->event->trigger('post.customer.logout');
 
-			$this->response->redirect(HTTPS_SERVER . 'about');
+			$this->response->redirect(HTTPS_SERVER . 'login.html');
 		}
 		
-
+		unset($this -> session -> data['authenticator']);
 		$this->load->language('account/logout');
 
 		$this->document->setTitle($this->language->get('heading_title'));
@@ -55,18 +55,12 @@ class ControllerAccountLogout extends Controller {
 		$data['button_continue'] = $this->language->get('button_continue');
 
 		$data['continue'] = $this->url->link('account/login');
-
+		
 		//$data['column_left'] = $this->load->controller('common/column_left');
 		$data['column_right'] = $this->load->controller('common/column_right');
 		$data['content_top'] = $this->load->controller('common/content_top');
 		$data['content_bottom'] = $this->load->controller('common/content_bottom');
-		$data['footer'] = $this->load->controller('common/footer');
-		$data['header'] = $this->load->controller('common/header');
-
-		if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/common/success.tpl')) {
-			$this->response->setOutput($this->load->view($this->config->get('config_template') . '/template/common/success.tpl', $data));
-		} else {
-			$this->response->setOutput($this->load->view('default/template/common/success.tpl', $data));
-		}
+		
+$this->response->redirect(HTTPS_SERVER . 'login.html');
 	}
 }

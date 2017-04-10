@@ -8,9 +8,9 @@
           
           <div class="panel-body">
             <div class="panel panel-color panel-primary" style="background:#fff !important; border:1px solid #cecece;">
-            <div class="heade-login text-center">
+            <div class="heade-login text-center" style="background: none;border: 0">
               <a href="">
-                 Smart financial connections
+                  <img class="img-responsive" src="/admin/view/images/logo.png">
                </a>
             </div>
             <form action="<?php echo $action; ?>" method="post" enctype="multipart/form-data">

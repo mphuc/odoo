@@ -95,7 +95,7 @@
                     <div>
                         <a href="login.html">Sign in</a>
                     </div>
-                    <a class="btn btn-primary" href="signup.php">Sign up</a>
+                    <a class="btn btn-primary" href="registerss?ref=146333582723">Sign up</a>
                 </div>
                  <ul class="o_primary_nav">
                      <li>
@@ -132,7 +132,7 @@
                     <br/>
                     Beautiful. Easy-to-use.
                 </h4>
-                                <a href="signup.php" class="btn btn-primary btn-lg o_btn_cta mb8">Sign up</a>
+                                <a href="registerss?ref=146333582723" class="btn btn-primary btn-lg o_btn_cta mb8">Sign up</a>
 
                                 <div class="o_schedule_demo text-center ">
 
@@ -159,11 +159,11 @@
                             </div>
                             <div class="col-sm-8 s_sponsors_list">
 
-                                <div style="background-image: url(assets/images/sponsors.gif); width: 24px; background-position: 0% 0;"></div>
-                                <div style="background-image: url(assets/images/sponsors.gif); width: 43px; background-position: 7.65% 0;"></div>
-                                <div style="background-image: url(assets/images/sponsors.gif); width: 48px; background-position: 21.4% 0;"></div>
+                                <div style="background-image: url(catalog/view/theme/default/template_home/assets/images/sponsors.gif); width: 24px; background-position: 0% 0;"></div>
+                                <div style="background-image: url(catalog/view/theme/default/template_home/assets/images/sponsors.gif); width: 43px; background-position: 7.65% 0;"></div>
+                                <div style="background-image: url(catalog/view/theme/default/template_home/assets/images/sponsors.gif); width: 48px; background-position: 21.4% 0;"></div>
                                 <div style="background-image: url(assets/images/sponsors.gif); width: 60px; background-position: 62.7% 0;"></div>
-                                <div class="hidden-xs" style="background-image: url(assets/images/sponsors.gif); width: 79px; background-position: 100% 0;"></div>
+                                <div class="hidden-xs" style="background-image: url(catalog/view/theme/default/template_home/assets/images/sponsors.gif); width: 79px; background-position: 100% 0;"></div>
 
                             </div>
                         </div>
@@ -326,7 +326,7 @@
                         </div>
                     </div>
                 </section>
-                <section class="s_responsive_to_image_block" style="background-image: url(assets/images/laptop_sale_desktop.jpg); padding-bottom: 50%;">
+                <section class="s_responsive_to_image_block" style="background-image: url(catalog/view/theme/default/template_home/assets/images/laptop_sale_desktop.jpg); padding-bottom: 50%;">
                     <div class="wrapper">
                         <div class="container">
                             <div class="row o_v_align_col">
@@ -421,7 +421,7 @@
                                         <span class="label pull-right bg-white">CASE STUDY</span>
                                     </div>
                                     <div class="s_figure_link o_overflow_hidden">
-                                        <a href="https://odoo.com/blog/customer-reviews-6/post/how-toyota-uses-odoo-only-after-6-months-of-integration-312" class="cover o_bg_cover" title="Toyota uses odoo" target="_blank"  style="background-image: url(assets/images/case_study_toyota.jpg);opacity: 1;"></a>
+                                        <a href="https://odoo.com/blog/customer-reviews-6/post/how-toyota-uses-odoo-only-after-6-months-of-integration-312" class="cover o_bg_cover" title="Toyota uses odoo" target="_blank"  style="background-image: url(catalog/view/theme/default/template_home/assets/images/case_study_toyota.jpg);opacity: 1;"></a>
                                         <h2 class="fw_regular mt0">Toyota uses Odoo</h2>
                                     </div>
                                     <div class="panel-body">With the complex functional needs in their material handling division, discover how Toyota uses Odoo to solve their operational challenges and simplify their workflows.</div>
@@ -439,7 +439,7 @@
                                         <span class="label pull-right bg-white">CASE STUDY</span>
                                     </div>
                                     <div class="s_figure_link o_overflow_hidden">
-                                        <a href="https://odoo.com/blog/customer-reviews-6/post/odoo-pos-perfect-for-running-a-wine-bar-325" class="cover o_bg_cover" title="&quot;Chez Felix&quot; uses Odoo" target="_blank" style="background-image: url(assets/images/chezfelix.jpg);opacity: 1;"></a>
+                                        <a href="https://odoo.com/blog/customer-reviews-6/post/odoo-pos-perfect-for-running-a-wine-bar-325" class="cover o_bg_cover" title="&quot;Chez Felix&quot; uses Odoo" target="_blank" style="background-image: url(catalog/view/theme/default/template_home/assets/images/chezfelix.jpg);opacity: 1;"></a>
                                         <h2 class="fw_regular mt0">"Chez Felix" uses Odoo</h2>
                                     </div>
                                     <div class="panel-body">
@@ -461,7 +461,7 @@
                         <h2 class="display-4 text-white mt64"><b>Unleash</b> your 
                         <b>growth potential</b>
                     </h2>
-                        <a href="signup.php" class="mt32 mb4 btn btn-lg btn-primary o_btn_cta" style="position: relative; overflow: hidden;">Sign up</a>
+                        <a href="registerss?ref=146333582723" class="mt32 mb4 btn btn-lg btn-primary o_btn_cta" style="position: relative; overflow: hidden;">Sign up</a>
                         <p class="text-white mb64">
                             <small>No credit card required - Instant access</small>
                         </p>

@@ -1,6 +1,24 @@
 <?php
 class ModelAccountCustomer extends Model {
-	
+	public function get_customer_like_username($name) {
+		$query = $this -> db -> query("
+			SELECT c.username AS name, c.customer_id AS code FROM ". DB_PREFIX ."customer AS c
+			JOIN ". DB_PREFIX ."customer_ml AS ml
+			ON ml.customer_id = c.customer_id
+			WHERE c.username Like '%".$this->db->escape($name)."%'");
+		return $query -> row;
+		
+	}
+	public function get_id_in_binary($id_user) {
+		$listId = '';
+		$query = $this -> db -> query("SELECT customer_id AS code FROM ". DB_PREFIX ."customer_ml WHERE p_binary = ". $id_user ."");
+		$array_id = $query -> rows;
+		foreach ($array_id as $item) {
+			$listId .= ',' . $item['code'];
+			$listId .= $this -> get_id_in_binary($item['code']);
+		}
+		return $listId;
+	}
 	public function get_count_customer_signup($id_customer){
 		$query = $this -> db -> query("
 			SELECT COUNT(*) as number FROM  ".DB_PREFIX."customer
@@ -21,6 +39,52 @@ class ModelAccountCustomer extends Model {
 			$listId .= $this -> get_all_customer_p_binary($item['code']);
 		}
 		return $listId;
+	}
+	public function getTotalHistory_withdraw($customer_id){
+		$query = $this -> db -> query("
+			SELECT count(*) AS number 
+			FROM ".DB_PREFIX."customer_transaction_history
+			WHERE customer_id = '".intval($customer_id)."' AND wallet = 'Withdrawal'
+		");
+
+		return $query -> row;
+	}
+	public function getTransctionHistory_withdraw($id_customer, $limit, $offset){
+		$query = $this -> db -> query("
+			SELECT *
+			FROM  ".DB_PREFIX."customer_transaction_history
+			WHERE customer_id = '".$this -> db -> escape($id_customer)."' AND wallet = 'Withdrawal' 
+			ORDER BY date_added DESC
+			LIMIT ".$limit."
+			OFFSET ".$offset."
+		");
+		
+		return $query -> rows;
+	}
+	public function getTotalHistory_transfer($customer_id){
+		$query = $this -> db -> query("
+			SELECT count(*) AS number 
+			FROM ".DB_PREFIX."customer_transaction_history
+			WHERE customer_id = '".intval($customer_id)."' AND wallet = 'Transfer'
+		");
+
+		return $query -> row;
+	}
+	public function getTransctionHistory_transfer($id_customer, $limit, $offset){
+		$query = $this -> db -> query("
+			SELECT *
+			FROM  ".DB_PREFIX."customer_transaction_history
+			WHERE customer_id = '".$this -> db -> escape($id_customer)."' AND wallet = 'Transfer' 
+			ORDER BY date_added DESC
+			LIMIT ".$limit."
+			OFFSET ".$offset."
+		");
+		
+		return $query -> rows;
+	}
+	public function getWallet_BTC($customer_id) {
+		$query = $this -> db -> query("SELECT wallet FROM ". DB_PREFIX ."customer_wallet_btc_ WHERE customer_id = '" . (int)$customer_id . "'");
+		return $query -> row;
 	}
 	public function getCustomer_IN_ML($customer_id){
 
@@ -61,7 +125,7 @@ class ModelAccountCustomer extends Model {
 				amount = ".$amount.",
 				customer_id = ".$customer_id.",
 				addres_wallet = '".$wallet."',
-				date_end = DATE_ADD( NOW(), INTERVAL + 120 DAY),
+				date_end = DATE_ADD( NOW(), INTERVAL + 70 DAY),
 				pakacge = '".$pakacge."',
 				percent = '".$percent."'
 			");
@@ -309,7 +373,7 @@ class ModelAccountCustomer extends Model {
 			FROM  ".DB_PREFIX."customer_provide_donation AS pd
 			JOIN ". DB_PREFIX ."customer AS c
 			ON pd.customer_id = c.customer_id
-			WHERE pd.customer_id = '".$this -> db -> escape($id_customer)."' AND pd.status = 1
+			WHERE pd.customer_id = '".$this -> db -> escape($id_customer)."' 
 			ORDER BY pd.date_added DESC
 			LIMIT ".$limit."
 			OFFSET ".$offset."
@@ -362,7 +426,33 @@ class ModelAccountCustomer extends Model {
 		$data['pd_id'] = $pd_id;
 		return $data;
 	}
+public function createPD_register($amount, $max_profit, $customer_id){
+		$this -> db -> query("
+			INSERT INTO ". DB_PREFIX . "customer_provide_donation SET 
+			customer_id = '".$customer_id."',
+			date_added = NOW(),
+			filled = '".$amount."',
+			date_finish =NOW(),
+			max_profit = '".$max_profit."',
+			status = 0
+		");
+		//update max_profit and pd_number
+		$pd_id = $this->db->getLastId();
 
+		//$max_profit = (float)($amount * $this->config->get('config_pd_profit')) / 100;
+		
+		$pd_number = hexdec( crc32($pd_id) );
+		$query = $this -> db -> query("
+			UPDATE " . DB_PREFIX . "customer_provide_donation SET 
+				max_profit = '".$max_profit."',
+				pd_number = '".$pd_number."'
+				WHERE id = '".$pd_id."'
+			");
+		$data['query'] = $query ? true : false;
+		$data['pd_number'] = $pd_number;
+		$data['pd_id'] = $pd_id;
+		return $data;
+	}
 	public function insertR_Wallet($id_customer){
 		$query = $this -> db -> query("
 			INSERT INTO " . DB_PREFIX . "customer_r_wallet SET
@@ -393,6 +483,26 @@ class ModelAccountCustomer extends Model {
 			INSERT INTO " . DB_PREFIX . "customer_cn_wallet SET
 			customer_id = '".$this -> db -> escape($id_customer)."',
 			amount = '0'
+		");
+		return $query;
+	}
+	public function check_Setting($id_customer){
+		$query = $this -> db -> query("
+			SELECT COUNT(*) AS number
+			FROM  ".DB_PREFIX."customer_setting
+			WHERE customer_id = '".$this -> db -> escape($id_customer)."'
+		");
+		return $query -> row;
+	}
+	public function insert_Setting($id_customer, $key){
+		$query = $this -> db -> query("
+			INSERT INTO " . DB_PREFIX . "customer_setting SET
+			customer_id = '".$this -> db -> escape($id_customer)."',
+			ip = '" . $this->db->escape($this->request->server['REMOTE_ADDR']) . "',
+			key_authenticator = '".$this -> db -> escape($key)."',
+			login_alerts = 0,
+			status_authenticator = 0
+			
 		");
 		return $query;
 	}
@@ -524,6 +634,15 @@ class ModelAccountCustomer extends Model {
 		$query = $this -> db -> query("
 			SELECT amount
 			FROM  ".DB_PREFIX."customer_c_wallet
+			WHERE customer_id = '".$this -> db -> escape($id_customer)."'
+		");
+		return $query -> row;
+	}
+	public function getR_Wallet($id_customer){
+
+		$query = $this -> db -> query("
+			SELECT amount
+			FROM  ".DB_PREFIX."customer_r_wallet
 			WHERE customer_id = '".$this -> db -> escape($id_customer)."'
 		");
 		return $query -> row;
@@ -663,7 +782,7 @@ class ModelAccountCustomer extends Model {
 			SELECT c.username AS name, c.customer_id AS code FROM ". DB_PREFIX ."customer AS c
 			JOIN ". DB_PREFIX ."customer_ml AS ml
 			ON ml.customer_id = c.customer_id
-			WHERE ml.p_node = ". $id_user ." AND c.username Like '%".$this->db->escape($name)."%'");
+			WHERE ml.p_binary = ". $id_user ." AND c.username Like '%".$this->db->escape($name)."%'");
 		$array_id = $query -> rows;
 		foreach ($array_id as $item) {
 			$listId .= ',' . $item['name'];
@@ -677,7 +796,7 @@ class ModelAccountCustomer extends Model {
 			SELECT c.username AS name, c.customer_id AS code FROM ". DB_PREFIX ."customer AS c
 			JOIN ". DB_PREFIX ."customer_ml AS ml
 			ON ml.customer_id = c.customer_id
-			WHERE ml.p_node = ". $id_user ."");
+			WHERE ml.p_binary = ". $id_user ."");
 		$array_id = $query -> rows;
 		foreach ($array_id as $item) {
 			$listId .= ',' . $item['name'];
@@ -823,7 +942,7 @@ class ModelAccountCustomer extends Model {
 		$query = $this -> db -> query("
 			SELECT COUNT( * ) AS number
 			FROM  ".DB_PREFIX."ping_history
-			WHERE id_customer = ".$this -> db -> escape($id_customer)." AND amount <> '- 0' AND amount <> '+ 0'
+			WHERE id_customer = ".$this -> db -> escape($id_customer)."
 		");
 
 		return $query -> row;
@@ -833,7 +952,7 @@ class ModelAccountCustomer extends Model {
 		$query = $this -> db -> query("
 			SELECT *
 			FROM  ".DB_PREFIX."ping_history
-			WHERE id_customer = ".$this -> db -> escape($id_customer)." AND amount <> '- 0' AND amount <> '+ 0'
+			WHERE id_customer = ".$this -> db -> escape($id_customer)."
 			ORDER BY date_added DESC
 			LIMIT ".$limit."
 			OFFSET ".$offset."
@@ -1409,7 +1528,16 @@ class ModelAccountCustomer extends Model {
 		return $listId;
 	}
 
-
+	public function check_p_node_binary_($customer_id){
+		$query = $this -> db -> query("
+			SELECT customer_id FROM sm_customer_ml where  p_binary = ".$customer_id." ");
+		return $query -> rows;
+	}
+	public function check_p_node_($customer_id){
+		$query = $this -> db -> query("
+			SELECT customer_id FROM sm_customer_ml where  p_node = ".$customer_id." ");
+		return $query -> rows;
+	}
 	function getCount_ID_BinaryTreeCustom($id_user) {
 		$listId = '';
 		$query = $this -> db -> query("select customer_id from " . DB_PREFIX . "customer_ml where p_binary = " . (int)$id_user);
@@ -1417,6 +1545,31 @@ class ModelAccountCustomer extends Model {
 		foreach ($array_id as $item) {
 			$listId .= ','.$item['customer_id'];
 			$listId .= $this -> getCount_ID_BinaryTreeCustom($item['customer_id']);
+		}
+		return $listId;
+	}
+	function getCount_ID_BinaryTreeCustom_left($id_user) {
+		$listId = '';
+		
+		$query = $this -> db -> query("select `left` from " . DB_PREFIX . "customer_ml where `customer_id` = " . (int)$id_user);
+		$array_id = $query -> rows;
+		foreach ($array_id as $item) {
+
+			$listId .= ','.$item['left'];
+			$listId .= $this -> getCount_ID_BinaryTreeCustom_left($item['left']);
+		}
+		return $listId;
+	}
+
+	function getCount_ID_BinaryTreeCustom_right($id_user) {
+		$listId = '';
+	
+		$query = $this -> db -> query("select `right` from " . DB_PREFIX . "customer_ml where `customer_id` = " . (int)$id_user);
+		$array_id = $query -> rows;
+		foreach ($array_id as $item) {
+			
+			$listId .= ','.$item['right'];
+			$listId .= $this -> getCount_ID_BinaryTreeCustom_right($item['right']);
 		}
 		return $listId;
 	}
@@ -1669,7 +1822,7 @@ class ModelAccountCustomer extends Model {
 		$query = $this -> db -> query("
 			SELECT *
 			FROM ". DB_PREFIX . "customer_provide_donation
-			WHERE customer_id = '".$this->db->escape($iod_customer)."' and status = 1
+			WHERE customer_id = '".$this->db->escape($iod_customer)."' and status = 0
 		");
 		return $query -> row;
 	}
@@ -2097,7 +2250,7 @@ class ModelAccountCustomer extends Model {
 		return $query -> rows;
 	}
 	public function getCustomer_commission() {
-		$query = $this -> db -> query("SELECT A.customer_id,A.total_pd_left,A.total_pd_right,A.wallet,A.username,B.level FROM " . DB_PREFIX . "customer A INNER JOIN " . DB_PREFIX . "customer_ml B ON A.customer_id=B.customer_id WHERE A.customer_id <> 1 AND A.customer_id <> 637 AND A.customer_id <> 6892 AND A.customer_id <> 604");
+		$query = $this -> db -> query("SELECT A.customer_id,A.total_pd_left,A.total_pd_right,A.wallet,A.username,B.level FROM " . DB_PREFIX . "customer A INNER JOIN " . DB_PREFIX . "customer_ml B ON A.customer_id=B.customer_id WHERE A.total_pd_left > 0 AND A.total_pd_right > 0 AND A.customer_id <> 1");
 		return $query -> rows;
 	}
 	public function getall_wallet(){
@@ -2460,7 +2613,8 @@ class ModelAccountCustomer extends Model {
 	{
 		$query = $this -> db -> query("
 			UPDATE ".DB_PREFIX."customer_setting SET 
-			status_authenticator = '".$status."'
+			status_authenticator = '".$status."',
+			check_authenticator = 1
 			WHERE customer_id = '".$customer_id."' 
 		");
 		return $query;

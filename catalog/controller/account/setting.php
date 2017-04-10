@@ -282,7 +282,7 @@ class ControllerAccountSetting extends Controller {
 	}
 
 	public function updatewallet() {
-		
+		!$_POST && die();
 		if ($this -> customer -> isLogged() && $this -> request -> post['wallet'] && $this -> request -> post['transaction_password']) {
 			
 			$json['login'] = $this -> customer -> isLogged() ? 1 : -1;
