@@ -15,19 +15,7 @@ class ControllerModuleAccountleft extends Controller {
 		$data['message'] = $this->url->link('account/message', '', 'SSL');
 
 
-		// $data['edit'] = $this->url->link('account/edit', '', 'SSL');
-		// $data['password'] = $this->url->link('account/password', '', 'SSL');
-		// $data['logout'] = $this->url->link('account/logout', '', 'SSL');
-		
-		// $data['binary'] = $this->url->link('account/binary', '', 'SSL');
-		// $data['personal'] = $this->url->link('account/personal', '', 'SSL');
-		// $data['info_hp'] = $this->url->link('account/info_hp', '', 'SSL');
-		// $data['info_ctp'] = $this->url->link('account/info_ctp', '', 'SSL');
-		// $data['user_nothp'] = $this->url->link('account/user_nothp', '', 'SSL');
-		// $data['user_off'] = $this->url->link('account/user_off', '', 'SSL');
-		// $data['thongbao'] = $this->url->link('information/information&information_id=7', '', 'SSL');
 
-		//loding link by phucnguyen
 
 		$data['self'] = $this;
 	
@@ -50,7 +38,7 @@ class ControllerModuleAccountleft extends Controller {
 		$language -> load('account/left');
 		$data['lang'] = $language -> data;
 		$data['base'] = $server;	
-		
+			
 		if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/module/accountleft.tpl')) {
 			return $this->load->view($this->config->get('config_template') . '/template/module/accountleft.tpl', $data);
 		} else {

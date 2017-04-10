@@ -13,7 +13,7 @@
                         <div class="card-box">
                             <div class="card-box-head  border-b m-t-0">
                                 <h4 class="header-title"><b>Your Affilate Link </b>
-                                <input style="border:none;margin-left:15px;color: #1C2B36;font-size: 15px;width: 400px" readonly class="js-copytextarea"value="<?php echo HTTPS_SERVER.'registerss?ref='.$customer_code; ?>" title="<?php echo HTTPS_SERVER.'registerss?ref='.$customer_code; ?>">
+                                <input style="border:none;margin-left:15px;color: #1C2B36;font-size: 15px;width: 400px" readonly class="js-copytextarea"value="<?php echo HTTPS_SERVER.'register?ref='.$customer_code; ?>" title="<?php echo HTTPS_SERVER.'register?ref='.$customer_code; ?>">
             
                                     <button style="margin-top: -5px;" class="btn btn-default js-textareacopybtn pull-right">Copy Link</button>
                             </div>

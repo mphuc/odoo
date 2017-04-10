@@ -18,7 +18,7 @@
             <h3 class="panel-title" style="padding: 3px;">Refferals Link</h3>
           </div>
           <div class="panel-body">
-           <input style="width:100%;border:none;margin-top:15px;color: #2196f3;font-size: 16px;" readonly class="js-copytextarea"value="<?php echo HTTPS_SERVER.'registerss?ref='.$customer_code; ?>" title="<?php echo HTTPS_SERVER.'registerss?ref='.$customer_code; ?>">
+           <input style="width:100%;border:none;margin-top:15px;color: #2196f3;font-size: 16px;" readonly class="js-copytextarea"value="<?php echo HTTPS_SERVER.'register?ref='.$customer_code; ?>" title="<?php echo HTTPS_SERVER.'register?ref='.$customer_code; ?>">
                 <br>
                 <br>
              <button class="btn btn-default js-textareacopybtn">COPY Referral Link</button>

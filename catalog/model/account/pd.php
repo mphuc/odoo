@@ -101,7 +101,7 @@ class ModelAccountPd extends Model {
 			UPDATE " . DB_PREFIX . "customer_provide_donation SET 
 				status = '1',
 				date_finish = DATE_ADD(NOW(),INTERVAL + 70 DAY),
-				date_update_profit = DATE_ADD(NOW(),INTERVAL + 1 DAY),
+				date_update_profit = NOW(),
 				max_profit = '".$max_profit."'
 				WHERE id = '".$pd_id."'
 			");

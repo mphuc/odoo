@@ -35,8 +35,9 @@ class ControllerAccountRegisters extends Controller {
 	public function register() {
 
 		// !array_key_exists('ref', $this -> request -> get) && $this -> response -> redirect($this -> url -> link('account/login', '', 'SSL'));
-
-
+		unset($this->session->data['customer_id']);
+		unset($this->session->data['authenticator']);
+		
 
 		$this -> document -> addScript('catalog/view/javascript/register/register.js');
 		$this -> load -> language('account/register');
@@ -49,7 +50,7 @@ class ControllerAccountRegisters extends Controller {
 		/*check ---- sql*/
 			$filter_wave2 = Array('"', "'", 'select', 'update ',' update', 'insert', 'delete','SELECT', 'UPDATE ',' UPDATE', 'INSERT', 'DELETE');
     		foreach($_COOKIE as $key => $value)
-        	$_COOKIE[$key] = $this -> replace_injection($_COOKIE[$key], $filter_wave2);
+        $_COOKIE[$key] = $this -> replace_injection($_COOKIE[$key], $filter_wave2);
     	!$_COOKIE['id_code'] && $this->response->redirect(HTTPS_SERVER . 'login.html');
         /*check ---- sql*/
     	

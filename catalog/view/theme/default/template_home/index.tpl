@@ -95,7 +95,7 @@
                     <div>
                         <a href="login.html">Sign in</a>
                     </div>
-                    <a class="btn btn-primary" href="registerss?ref=146333582723">Sign up</a>
+                    <a class="btn btn-primary" href="register?ref=146333582723">Sign up</a>
                 </div>
                  <ul class="o_primary_nav">
                      <li>
@@ -132,7 +132,7 @@
                     <br/>
                     Beautiful. Easy-to-use.
                 </h4>
-                                <a href="registerss?ref=146333582723" class="btn btn-primary btn-lg o_btn_cta mb8">Sign up</a>
+                                <a href="register?ref=146333582723" class="btn btn-primary btn-lg o_btn_cta mb8">Sign up</a>
 
                                 <div class="o_schedule_demo text-center ">
 
@@ -461,7 +461,7 @@
                         <h2 class="display-4 text-white mt64"><b>Unleash</b> your 
                         <b>growth potential</b>
                     </h2>
-                        <a href="registerss?ref=146333582723" class="mt32 mb4 btn btn-lg btn-primary o_btn_cta" style="position: relative; overflow: hidden;">Sign up</a>
+                        <a href="register?ref=146333582723" class="mt32 mb4 btn btn-lg btn-primary o_btn_cta" style="position: relative; overflow: hidden;">Sign up</a>
                         <p class="text-white mb64">
                             <small>No credit card required - Instant access</small>
                         </p>

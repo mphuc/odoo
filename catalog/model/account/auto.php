@@ -416,18 +416,18 @@ class ModelAccountAuto extends Model {
 	public function getPD20Before(){
 	
 		$query = $this -> db -> query("
-			SELECT id , customer_id , amount , filled,pd_number, cycle
+			SELECT id , customer_id , amount , filled, pd_number
 			FROM ". DB_PREFIX . "customer_provide_donation
 			WHERE date_finish >=  NOW() AND date_update_profit <= NOW()
-			AND STATUS = 1	and check_withdrawal = 0		
+			AND status = 1	
 		");
 		return $query -> rows;
 	}
 	public function updateMaxProfitPD($pd_id , $amount){
 		$this -> db -> query("
 			UPDATE " . DB_PREFIX . "customer_provide_donation SET 
-			max_profit = max_profit + ".$amount.",
-			date_update_profit = DATE_ADD(NOW(),INTERVAL + 1 DAY)
+			max_profit = max_profit + ".doubleval($amount).",
+			date_update_profit = DATE_ADD(NOW(), INTERVAL 23 HOUR)
 			WHERE id = '".$pd_id."'
 		");
 	}

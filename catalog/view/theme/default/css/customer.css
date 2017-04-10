@@ -1116,3 +1116,8 @@ ul#suggesstion-box {
     border-width: 1px;
     background: #fb6d9d !important;
 }
+#sidebar-menu .menu-title {
+    padding: 10px 20px 15px!important;
+    border-top: solid 1px #243a49 !important;
+    color: #fff;
+}

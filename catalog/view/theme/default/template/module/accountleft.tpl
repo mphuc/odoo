@@ -4,7 +4,23 @@
             <!--- Divider -->
             <div id="sidebar-menu">
                 <ul>
-                  
+                <?php 
+                   date_default_timezone_set('America/Los_Angeles'); // or wherever you are
+
+$time = time();
+
+if ($time >= strtotime("Second Sunday March 0")  && $time < strtotime("First Sunday November 0")) 
+{
+
+    $date = date('m/d/y h:i a', $time);
+
+} else {
+
+    $date = date('m/d/y h:i a', $time);
+
+} 
+                ?>
+                    <li class="menu-title" >Server Time: <br><span style="text-transform: uppercase;"><?php echo $date; ?></span></li>
                     <li class="has_sub">
                         <a href="home.html" class="waves-effect"> <i class="fa fa-dashboard"></i> <span> Dashboard </span> </a>  
                     </li>

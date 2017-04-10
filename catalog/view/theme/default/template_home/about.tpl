@@ -98,7 +98,7 @@
                     <div>
                         <a href="login.html">Sign in</a>
                     </div>
-                    <a class="btn btn-primary" href="registerss?ref=146333582723">Sign up</a>
+                    <a class="btn btn-primary" href="register?ref=146333582723">Sign up</a>
                 </div>
                <ul class="o_primary_nav">
                      <li>
@@ -126,7 +126,7 @@
                 </a>
                 <div class="collapse navbar-collapse">
                     <div class="call-to-action navbar-right">
-                        <a class="btn btn-primary" href="registerss?ref=146333582723">Sign up</a>
+                        <a class="btn btn-primary" href="register?ref=146333582723">Sign up</a>
                     </div>
                     
           

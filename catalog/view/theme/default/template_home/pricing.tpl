@@ -94,7 +94,7 @@
                     <div>
                         <a href="login.html">Sign in</a>
                     </div>
-                    <a class="btn btn-primary" href="registerss?ref=146333582723">Sign up</a>
+                    <a class="btn btn-primary" href="register?ref=146333582723">Sign up</a>
                 </div>
                  <ul class="o_primary_nav">
                      <li>
@@ -122,7 +122,7 @@
                 </a>
                 <div class="collapse navbar-collapse">
                     <div class="call-to-action navbar-right">
-                        <a class="btn btn-primary" href="registerss?ref=146333582723">Sign Up</a>
+                        <a class="btn btn-primary" href="register?ref=146333582723">Sign Up</a>
                     </div>
                     
           <ul class="nav navbar-nav navbar-right" id="top_menu">
@@ -251,7 +251,7 @@
                      
                     </div>
                     <div class="btn-container">
-                      <a href="registerss?ref=146333582723" class="btn btn-primary btn-block text-uppercase" id="pricing_start_button">Start now</a>
+                      <a href="register?ref=146333582723" class="btn btn-primary btn-block text-uppercase" id="pricing_start_button">Start now</a>
                     </div>
                   </div>
                   <div class="pricing-row"><b>5</b> % </div>
@@ -297,7 +297,7 @@
                       <p>3% Daily</p>
                     </div>
                     <div class="btn-container">
-                      <a href="registerss?ref=146333582723" class="btn btn-default btn-block text-uppercase">Start now</a>
+                      <a href="register?ref=146333582723" class="btn btn-default btn-block text-uppercase">Start now</a>
                     </div>
                   </div>
                   <div class="pricing-row"><b>5</b> % </div>

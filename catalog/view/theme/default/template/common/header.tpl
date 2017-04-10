@@ -69,13 +69,7 @@
                      <span class="clearfix"></span>
 
                   </div>
-            <ul class="nav navbar-nav">
-               
-                  <li>
-                     <a href="javascript:void(0)" class="waves-effect waves-light" ><?php echo date("d/m/Y H:i A") ?></a>
-                     
-                  </li>
-               </ul>
+           
                   <ul class="nav navbar-nav navbar-right pull-right">
                     <?php if(count($pd_march) > 0){
 
